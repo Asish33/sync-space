@@ -5,11 +5,12 @@ export function User(){
     const { 
         data: session, 
         isPending, 
-        error, //
+        error, 
         refetch 
     } = authClient.useSession() 
 
-    return (
-        session
-    )
+    return {
+        session,
+        isPending
+    }
 }

@@ -1,4 +1,4 @@
-// lib/sign-out.ts
+
 import { useRouter } from "next/navigation";
 import { authClient } from "./auth-client";
 export function useSignOut() {
