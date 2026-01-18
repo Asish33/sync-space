@@ -61,7 +61,7 @@ export default function NotesPage() {
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.push("/sign-in");
+      router.push("/login");
     }
   }, [session, isPending, router]);
 
