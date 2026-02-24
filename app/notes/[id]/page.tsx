@@ -4,16 +4,10 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { User } from "@/lib/user";
 import axios from "axios";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
-import Typography from "@tiptap/extension-typography";
-import Heading from "@tiptap/extension-heading";
-import { Markdown } from "@tiptap/markdown";
-import "../editor.css";
+import { EditorContent } from "@tiptap/react";
+import { toast } from "sonner";
+import "@/components/editor.css";
+import { useNoteEditor } from "@/hooks/use-note-editor";
 
 export default function NotePage() {
   const params = useParams();
@@ -23,45 +17,21 @@ export default function NotePage() {
   
   const [note, setNote] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: false,
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-      }),
-      Markdown,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: 'https',
-      }),
-      Image,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
-      Typography,
-    ],
-    editable: false,
+  const editor = useNoteEditor({
     content: note?.content || "",
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        class: "prose max-w-none focus:outline-none min-h-[300px] px-3 py-2 text-black",
-      },
-    },
+    editable: true,
   });
 
-
+  // Auth check
   useEffect(() => {
     if (!isPending && !session) {
       router.push("/login");
     }
   }, [session, isPending, router]);
 
+  // Fetch note
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -82,13 +52,36 @@ export default function NotePage() {
     }
   }, [noteId]);
 
-
+  // Set initial content
   useEffect(() => {
     if (editor && note?.content) {
       editor.commands.setContent(note.content, { contentType: 'markdown' } as any);
     }
   }, [editor, note]);
 
+  // Save note
+  const handleSave = async () => {
+    if (!editor) return;
+    
+    try {
+      setIsSaving(true);
+      // @ts-ignore
+      const content = editor.storage?.markdown?.getMarkdown?.() || editor.getMarkdown?.() || "";
+      
+      await axios.put(
+        `http://localhost:3000/updateNotes/${noteId}`,
+        { content, title: note?.title },
+        { withCredentials: true }
+      );
+      toast.success("Note saved!");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save note");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (isPending) {
     return (
@@ -143,6 +136,16 @@ export default function NotePage() {
             </svg>
             Back to Dashboard
           </button>
+          
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
+            >
+              {isSaving ? "Saving..." : "Save"}
+            </button>
+          </div>
         </div>
 
 

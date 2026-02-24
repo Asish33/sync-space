@@ -5,56 +5,22 @@ import { useRouter } from "next/navigation";
 import { User } from "@/lib/user";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
-import Typography from "@tiptap/extension-typography";
-import Heading from "@tiptap/extension-heading";
-import { Markdown } from "@tiptap/markdown";
-import "./editor.css";
+import { EditorContent } from "@tiptap/react";
+import "@/components/editor.css";
+import { useNoteEditor } from "@/hooks/use-note-editor";
 
 export default function NotesPage() {
   const router = useRouter();
   const { session, isPending } = User();
   const [content, setContent] = useState<string>(""); 
   const [viewType, setViewType] = useState<"markdown" | "tiptap">("markdown");
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: false,
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
-      }),
-      Markdown,
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: 'https',
-      }),
-      Image,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
-      Typography,
-    ],
-    content: content,
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        class: "prose max-w-none focus:outline-none min-h-[300px] px-3 py-2 text-black",
-      },
-    },
-    onUpdate: ({ editor }) => {
-
-       if (viewType === 'tiptap') {
-         setContent((editor as any).getMarkdown());
-       }
+  const [title,setTitle] = useState<string>("");
+  const editor = useNoteEditor({
+    content,
+    onUpdate: (markdown) => {
+      if (viewType === 'tiptap') {
+        setContent(markdown);
+      }
     },
   });
 
@@ -86,7 +52,7 @@ export default function NotesPage() {
       .post(
         `http://localhost:3000/notes/${notesId}`,
         {
-          title: "Notes",
+          title: title,
           content: content, 
         },
         {
@@ -118,6 +84,9 @@ export default function NotesPage() {
   return (
     <main className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
       <div className="w-full max-w-3xl bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex flex-col gap-4">
+        <div>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+        </div>
         <div className="flex justify-between items-start">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">Notes</h1>
