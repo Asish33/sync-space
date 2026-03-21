@@ -118,8 +118,8 @@ export default function CodeFilePage() {
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10 relative">
       <AiChatPanel
-        onAddToNotes={(newContent) =>
-          setContent((prev) => prev + "\n/*\n" + newContent + "\n*/")
+        onAddToNotes={(rawContent) =>
+          setContent((prev) => prev + (prev.trim() ? "\n\n" : "") + rawContent)
         }
         getContextData={() => `Language: ${language}\n\nCode:\n${content}`}
       />

@@ -9,7 +9,7 @@ interface ChatMessage {
 }
 
 interface AiChatPanelProps {
-  onAddToNotes: (content: string) => void;
+  onAddToNotes: (content: string, markdownContent?: string) => void;
   getContextData?: () => string;
 }
 
@@ -199,17 +199,24 @@ User Question: ${trimmed}`;
                   {msg.role === "ai" && (
                     <button
                       onClick={() => {
-                        const codeRegex = /```[a-zA-Z0-9-]*\r?\n([\s\S]*?)```/g;
-                        const extracted: string[] = [];
+                        const codeRegex =
+                          /```([a-zA-Z0-9-]*)\r?\n([\s\S]*?)```/g;
+                        const extractedRaw: string[] = [];
+                        const extractedMarkdown: string[] = [];
                         let match;
                         while ((match = codeRegex.exec(msg.content)) !== null) {
-                          extracted.push(match[1].trim());
+                          extractedRaw.push(match[2].trim());
+                          extractedMarkdown.push(match[0].trim());
                         }
-                        const finalContent =
-                          extracted.length > 0
-                            ? extracted.join("\n\n")
+                        const finalRawContent =
+                          extractedRaw.length > 0
+                            ? extractedRaw.join("\n\n")
                             : msg.content;
-                        onAddToNotes(finalContent);
+                        const finalMarkdownContent =
+                          extractedMarkdown.length > 0
+                            ? extractedMarkdown.join("\n\n")
+                            : msg.content;
+                        onAddToNotes(finalRawContent, finalMarkdownContent);
                       }}
                       className="mt-2 flex items-center gap-1.5 text-xs font-medium text-violet-600 hover:text-violet-800 transition-colors px-2 py-1 rounded-md hover:bg-violet-50"
                     >

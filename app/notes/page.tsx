@@ -67,18 +67,17 @@ export default function NotesPage() {
       });
   };
 
-  const handleAddToNotes = (newContent: string) => {
+  const handleAddToNotes = (rawContent: string, markdownContent?: string) => {
     // Determine the text to append
-    const textToAppend = "\n\n" + newContent;
+    const textToAppend = "\n\n" + (markdownContent || rawContent);
 
     if (viewType === "tiptap" && editor) {
       // Append to tiptap editor
       editor.commands.insertContent(textToAppend);
       // Update content state
-      // @ts-ignore
       const markdown =
-        editor.storage?.markdown?.getMarkdown?.() ||
-        editor.getMarkdown?.() ||
+        (editor.storage?.markdown as any)?.getMarkdown?.() ||
+        (editor as any).getMarkdown?.() ||
         "";
       setContent(markdown);
     } else {

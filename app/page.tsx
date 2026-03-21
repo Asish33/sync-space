@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { motion, useInView } from "framer-motion"
-import { useRef, useState, useEffect } from "react"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -16,27 +16,31 @@ import {
   Check,
   Moon,
   Sun,
-} from "lucide-react"
+} from "lucide-react";
 
 // Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-}
+};
 
 const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.5 } },
-}
+};
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.1 } },
-}
+};
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
-}
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
 
 // Section wrapper with scroll animation
 function AnimatedSection({
@@ -44,12 +48,12 @@ function AnimatedSection({
   className = "",
   delay = 0,
 }: {
-  children: React.ReactNode
-  className?: string
-  delay?: number
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
 }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <motion.section
@@ -58,32 +62,36 @@ function AnimatedSection({
       animate={isInView ? "visible" : "hidden"}
       variants={{
         hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease: "easeOut" } },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.7, delay, ease: "easeOut" },
+        },
       }}
       className={className}
     >
       {children}
     </motion.section>
-  )
+  );
 }
 
 // Hero UI Mock component
 function HeroUIMock() {
-  const [typingText, setTypingText] = useState("")
-  const fullText = "Let's review chapter 5..."
+  const [typingText, setTypingText] = useState("");
+  const fullText = "Let's review chapter 5...";
 
   useEffect(() => {
-    let i = 0
+    let i = 0;
     const timer = setInterval(() => {
       if (i <= fullText.length) {
-        setTypingText(fullText.slice(0, i))
-        i++
+        setTypingText(fullText.slice(0, i));
+        i++;
       } else {
-        i = 0
+        i = 0;
       }
-    }, 150)
-    return () => clearInterval(timer)
-  }, [])
+    }, 150);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <motion.div
@@ -110,7 +118,9 @@ function HeroUIMock() {
         <div className="grid grid-cols-1 md:grid-cols-12 min-h-[320px]">
           {/* Chat Panel */}
           <div className="md:col-span-3 border-r border-border/40 p-3 bg-muted/10">
-            <div className="text-xs font-medium text-muted-foreground mb-3">Group Chat</div>
+            <div className="text-xs font-medium text-muted-foreground mb-3">
+              Group Chat
+            </div>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-medium text-primary">
@@ -155,10 +165,14 @@ function HeroUIMock() {
               Shared Notes
             </div>
             <div className="space-y-2 text-sm">
-              <div className="font-semibold text-foreground">Chapter 5: Data Structures</div>
+              <div className="font-semibold text-foreground">
+                Chapter 5: Data Structures
+              </div>
               <div className="text-muted-foreground text-xs leading-relaxed">
                 <p className="mb-2">• Arrays: Fixed-size, contiguous memory</p>
-                <p className="mb-2">• Linked Lists: Dynamic size, pointer-based</p>
+                <p className="mb-2">
+                  • Linked Lists: Dynamic size, pointer-based
+                </p>
                 <p className="relative">
                   • {typingText}
                   <span className="cursor-blink inline-block w-0.5 h-3.5 bg-primary ml-0.5 align-middle" />
@@ -178,7 +192,12 @@ function HeroUIMock() {
             </motion.div>
             <motion.div
               animate={{ x: [0, -8, 0], y: [0, 8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
               className="absolute bottom-16 left-32 pointer-events-none"
             >
               <div className="w-3 h-3 border-l-2 border-t-2 border-purple-500 rotate-[-45deg]" />
@@ -196,20 +215,30 @@ function HeroUIMock() {
             </div>
             <div className="space-y-2">
               <div className="bg-primary/10 border border-primary/20 rounded-lg p-2">
-                <div className="text-[11px] font-medium text-primary">Live Now</div>
-                <div className="text-[10px] text-muted-foreground mt-0.5">Data Structures Review</div>
+                <div className="text-[11px] font-medium text-primary">
+                  Live Now
+                </div>
+                <div className="text-[10px] text-muted-foreground mt-0.5">
+                  Data Structures Review
+                </div>
                 <div className="flex items-center gap-1 mt-1.5">
                   <div className="flex -space-x-1">
                     <div className="w-4 h-4 rounded-full bg-primary/30 border border-background" />
                     <div className="w-4 h-4 rounded-full bg-green-500/30 border border-background" />
                     <div className="w-4 h-4 rounded-full bg-purple-500/30 border border-background" />
                   </div>
-                  <span className="text-[9px] text-muted-foreground">3 members</span>
+                  <span className="text-[9px] text-muted-foreground">
+                    3 members
+                  </span>
                 </div>
               </div>
               <div className="bg-muted/30 rounded-lg p-2">
-                <div className="text-[10px] text-muted-foreground">Tomorrow, 4:00 PM</div>
-                <div className="text-[11px] font-medium mt-0.5">Algorithms Practice</div>
+                <div className="text-[10px] text-muted-foreground">
+                  Tomorrow, 4:00 PM
+                </div>
+                <div className="text-[11px] font-medium mt-0.5">
+                  Algorithms Practice
+                </div>
               </div>
             </div>
 
@@ -237,7 +266,7 @@ function HeroUIMock() {
       {/* Floating glow effects */}
       <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-3xl" />
     </motion.div>
-  )
+  );
 }
 
 // Feature card component
@@ -247,10 +276,10 @@ function FeatureCard({
   description,
   index,
 }: {
-  icon: React.ElementType
-  title: string
-  description: string
-  index: number
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  index: number;
 }) {
   return (
     <motion.div
@@ -263,9 +292,11 @@ function FeatureCard({
         <Icon className="w-6 h-6 text-primary" />
       </div>
       <h3 className="font-semibold text-lg text-foreground mb-2">{title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed">
+        {description}
+      </p>
     </motion.div>
-  )
+  );
 }
 
 // Step component
@@ -275,20 +306,26 @@ function Step({
   description,
   index,
 }: {
-  number: number
-  title: string
-  description: string
-  index: number
+  number: number;
+  title: string;
+  description: string;
+  index: number;
 }) {
   return (
-    <motion.div variants={fadeInUp} custom={index} className="flex-1 text-center px-4">
+    <motion.div
+      variants={fadeInUp}
+      custom={index}
+      className="flex-1 text-center px-4"
+    >
       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mx-auto mb-4 text-primary-foreground font-bold text-lg shadow-glow-sm">
         {number}
       </div>
       <h3 className="font-semibold text-lg text-foreground mb-2">{title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed">
+        {description}
+      </p>
     </motion.div>
-  )
+  );
 }
 
 // Testimonial card
@@ -298,10 +335,10 @@ function TestimonialCard({
   role,
   index,
 }: {
-  quote: string
-  author: string
-  role: string
-  index: number
+  quote: string;
+  author: string;
+  role: string;
+  index: number;
 }) {
   return (
     <motion.div
@@ -309,7 +346,9 @@ function TestimonialCard({
       custom={index}
       className="p-6 rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm"
     >
-      <p className="text-foreground/90 text-base leading-relaxed mb-4 italic">"{quote}"</p>
+      <p className="text-foreground/90 text-base leading-relaxed mb-4 italic">
+        "{quote}"
+      </p>
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary font-semibold">
           {author.charAt(0)}
@@ -320,53 +359,59 @@ function TestimonialCard({
         </div>
       </div>
     </motion.div>
-  )
+  );
 }
 
 export default function HomePage() {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     // Check system preference
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    setIsDark(prefersDark)
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    setIsDark(prefersDark);
     if (prefersDark) {
-      document.documentElement.classList.add("dark")
+      document.documentElement.classList.add("dark");
     }
-  }, [])
+  }, []);
 
   const toggleTheme = () => {
-    setIsDark(!isDark)
-    document.documentElement.classList.toggle("dark")
-  }
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle("dark");
+  };
 
   const features = [
     {
       icon: MessageSquare,
       title: "Real-Time Group Chat",
-      description: "Focused discussions without distractions. Stay connected with your study group.",
+      description:
+        "Focused discussions without distractions. Stay connected with your study group.",
     },
     {
       icon: FileText,
       title: "Collaborative Notes",
-      description: "Edit together. See live cursors. Stay aligned on every concept.",
+      description:
+        "Edit together. See live cursors. Stay aligned on every concept.",
     },
     {
       icon: Calendar,
       title: "Study Session Scheduling",
-      description: "Plan sessions. Get reminders. Stay accountable to your goals.",
+      description:
+        "Plan sessions. Get reminders. Stay accountable to your goals.",
     },
     {
       icon: Sparkles,
       title: "AI Study Assistant",
-      description: "Summaries, explanations, and smart study help when you need it.",
+      description:
+        "Summaries, explanations, and smart study help when you need it.",
     },
     {
       icon: Zap,
       title: "Instant Group Creation",
       description: "Create or join a group in seconds. Zero setup friction.",
     },
-  ]
+  ];
 
   const steps = [
     {
@@ -381,20 +426,22 @@ export default function HomePage() {
       title: "Learn with AI",
       description: "Use AI to revise, summarize, and stay ahead of the curve.",
     },
-  ]
+  ];
 
   const testimonials = [
     {
-      quote: "This is the first time group study actually worked for me. The real-time collaboration changed everything.",
+      quote:
+        "This is the first time group study actually worked for me. The real-time collaboration changed everything.",
       author: "Priya S.",
       role: "CS Student, IIT Delhi",
     },
     {
-      quote: "The AI summaries save me hours every week. It's like having a study partner who never sleeps.",
+      quote:
+        "The AI summaries save me hours every week. It's like having a study partner who never sleeps.",
       author: "Rahul M.",
       role: "CAT Aspirant",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
@@ -416,7 +463,9 @@ export default function HomePage() {
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-glow-sm">
             <BookOpen className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="font-semibold text-lg text-foreground">StudyTogether</span>
+          <span className="font-semibold text-lg text-foreground">
+            StudyTogether
+          </span>
         </div>
         <div className="flex items-center gap-2 md:gap-3">
           <Button
@@ -425,10 +474,17 @@ export default function HomePage() {
             onClick={toggleTheme}
             className="rounded-lg"
           >
-            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {isDark ? (
+              <Sun className="w-4 h-4" />
+            ) : (
+              <Moon className="w-4 h-4" />
+            )}
           </Button>
           <Link href="/login">
-            <Button variant="ghost" className="text-foreground hover:bg-secondary/50 rounded-lg hidden md:inline-flex">
+            <Button
+              variant="ghost"
+              className="text-foreground hover:bg-secondary/50 rounded-lg hidden md:inline-flex"
+            >
               Sign In
             </Button>
           </Link>
@@ -449,7 +505,10 @@ export default function HomePage() {
             variants={stagger}
             className="space-y-6"
           >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary font-medium">
+            <motion.div
+              variants={fadeInUp}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary font-medium"
+            >
               <Sparkles className="w-4 h-4" />
               Powered by AI
             </motion.div>
@@ -468,7 +527,8 @@ export default function HomePage() {
               variants={fadeInUp}
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             >
-              Create focused study groups, collaborate live on notes, schedule sessions, and use AI to learn faster — together.
+              Create focused study groups, collaborate live on notes, schedule
+              sessions, and use AI to learn faster — together.
             </motion.p>
 
             <motion.div
@@ -502,8 +562,16 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {/* Problems */}
-            <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-4">
-              <div className="text-sm font-medium text-destructive/80 mb-4 uppercase tracking-wider">The Problem</div>
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="text-sm font-medium text-destructive/80 mb-4 uppercase tracking-wider">
+                The Problem
+              </div>
               {[
                 "Studying alone = low motivation",
                 "Notes scattered across apps",
@@ -522,8 +590,16 @@ export default function HomePage() {
             </motion.div>
 
             {/* Solutions */}
-            <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-4">
-              <div className="text-sm font-medium text-green-600 mb-4 uppercase tracking-wider">The Solution</div>
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="text-sm font-medium text-green-600 mb-4 uppercase tracking-wider">
+                The Solution
+              </div>
               {[
                 "Dedicated study groups with purpose",
                 "One shared space for notes + chat",
@@ -644,8 +720,12 @@ export default function HomePage() {
                     <Sparkles className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">AI Assistant</div>
-                    <div className="text-xs text-muted-foreground">Ready to help</div>
+                    <div className="font-semibold text-foreground">
+                      AI Assistant
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Ready to help
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -653,9 +733,13 @@ export default function HomePage() {
                     "Summarize today's session"
                   </div>
                   <div className="bg-primary/10 rounded-xl p-3 text-sm">
-                    <div className="text-primary font-medium mb-1">Summary generated:</div>
+                    <div className="text-primary font-medium mb-1">
+                      Summary generated:
+                    </div>
                     <div className="text-foreground/80 text-xs leading-relaxed">
-                      Today we covered arrays, linked lists, and their trade-offs. Key takeaway: arrays for fast access, linked lists for fast insertion...
+                      Today we covered arrays, linked lists, and their
+                      trade-offs. Key takeaway: arrays for fast access, linked
+                      lists for fast insertion...
                     </div>
                   </div>
                   <div className="bg-muted/50 rounded-xl p-3 text-sm text-muted-foreground">
@@ -677,7 +761,9 @@ export default function HomePage() {
               Loved by focused students.
             </h2>
             <p className="text-lg text-muted-foreground">
-              Used by students from <span className="text-primary font-semibold">50+ colleges</span> worldwide
+              Used by students from{" "}
+              <span className="text-primary font-semibold">50+ colleges</span>{" "}
+              worldwide
             </p>
           </div>
 
@@ -755,9 +841,10 @@ export default function HomePage() {
           <span className="font-semibold text-foreground">StudyTogether</span>
         </div>
         <p className="text-sm text-muted-foreground">
-          © 2026 StudyTogether. Crafted with care for students who want to learn together.
+          © 2026 StudyTogether. Crafted with care for students who want to learn
+          together.
         </p>
       </footer>
     </div>
-  )
+  );
 }

@@ -92,9 +92,10 @@ export default function NotePage() {
     }
   };
 
-  const handleAddToNotes = (newContent: string) => {
+  const handleAddToNotes = (rawContent: string, markdownContent?: string) => {
+    const toInsert = markdownContent || rawContent;
     if (editor) {
-      editor.commands.insertContent("\n\n" + newContent);
+      editor.commands.insertContent("\n\n" + toInsert);
       toast.success("Added to notes!");
     }
   };
