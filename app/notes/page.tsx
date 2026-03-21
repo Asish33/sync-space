@@ -8,22 +8,22 @@ import { nanoid } from "nanoid";
 import { EditorContent } from "@tiptap/react";
 import "@/components/editor.css";
 import { useNoteEditor } from "@/hooks/use-note-editor";
+import AiChatPanel from "@/components/ai-chat-panel";
 
 export default function NotesPage() {
   const router = useRouter();
   const { session, isPending } = User();
-  const [content, setContent] = useState<string>(""); 
+  const [content, setContent] = useState<string>("");
   const [viewType, setViewType] = useState<"markdown" | "tiptap">("markdown");
-  const [title,setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const editor = useNoteEditor({
     content,
     onUpdate: (markdown) => {
-      if (viewType === 'tiptap') {
+      if (viewType === "tiptap") {
         setContent(markdown);
       }
     },
   });
-
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -33,12 +33,11 @@ export default function NotesPage() {
 
   const handleSwitch = (type: "markdown" | "tiptap") => {
     if (type === viewType) return;
-    
 
     if (type === "tiptap" && editor) {
-      editor.commands.setContent(content, { contentType: "markdown" } as any); 
+      editor.commands.setContent(content, { contentType: "markdown" } as any);
     }
-    
+
     setViewType(type);
   };
 
@@ -53,11 +52,11 @@ export default function NotesPage() {
         `http://localhost:3000/notes/${notesId}`,
         {
           title: title,
-          content: content, 
+          content: content,
         },
         {
           withCredentials: true,
-        }
+        },
       )
       .then((res) => {
         console.log("Notes saved");
@@ -68,6 +67,32 @@ export default function NotesPage() {
       });
   };
 
+  const handleAddToNotes = (newContent: string) => {
+    // Determine the text to append
+    const textToAppend = "\n\n" + newContent;
+
+    if (viewType === "tiptap" && editor) {
+      // Append to tiptap editor
+      editor.commands.insertContent(textToAppend);
+      // Update content state
+      // @ts-ignore
+      const markdown =
+        editor.storage?.markdown?.getMarkdown?.() ||
+        editor.getMarkdown?.() ||
+        "";
+      setContent(markdown);
+    } else {
+      // Append to markdown textarea
+      const updatedContent = content + textToAppend;
+      setContent(updatedContent);
+      // If editor exists, also update its content so it stays in sync
+      if (editor) {
+        editor.commands.setContent(updatedContent, {
+          contentType: "markdown",
+        } as any);
+      }
+    }
+  };
 
   if (isPending) {
     return (
@@ -82,25 +107,35 @@ export default function NotesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
+    <main className="min-h-screen bg-gray-50 flex justify-center px-4 py-10 relative">
+      <AiChatPanel
+        onAddToNotes={handleAddToNotes}
+        getContextData={() => content}
+      />
       <div className="w-full max-w-3xl bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex flex-col gap-4">
         <div>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
         </div>
         <div className="flex justify-between items-start">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">Notes</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Write and edit your notes below. When you&apos;re ready, click Save.
+              Write and edit your notes below. When you&apos;re ready, click
+              Save.
             </p>
           </div>
-          
+
           <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-md">
             <button
               onClick={() => handleSwitch("markdown")}
               className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
-                viewType === "markdown" 
-                  ? "bg-white text-black shadow-sm" 
+                viewType === "markdown"
+                  ? "bg-white text-black shadow-sm"
                   : "text-gray-500 hover:text-black"
               }`}
             >
@@ -109,8 +144,8 @@ export default function NotesPage() {
             <button
               onClick={() => handleSwitch("tiptap")}
               className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
-                viewType === "tiptap" 
-                  ? "bg-white text-black shadow-sm" 
+                viewType === "tiptap"
+                  ? "bg-white text-black shadow-sm"
                   : "text-gray-500 hover:text-black"
               }`}
             >
@@ -121,7 +156,7 @@ export default function NotesPage() {
 
         <div className="mt-2 rounded-md border border-gray-200 bg-white min-h-[300px]">
           {viewType === "tiptap" ? (
-             <EditorContent editor={editor} className="min-h-[300px]" />
+            <EditorContent editor={editor} className="min-h-[300px]" />
           ) : (
             <div className="flex flex-col h-full">
               <textarea
@@ -135,7 +170,7 @@ export default function NotesPage() {
                   onClick={() => handleSwitch("tiptap")}
                   className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
                 >
-                   Render Markdown &uarr;
+                  Render Markdown &uarr;
                 </button>
               </div>
             </div>

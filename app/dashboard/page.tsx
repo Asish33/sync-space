@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import { format, subDays, isSameDay, parseISO } from "date-fns";
 
@@ -22,9 +23,15 @@ export default function DashboardPage() {
   const signOut = useSignOut();
   const [notes, setNotes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [codes, setCodes] = useState<any[]>([]);
+  const [loadingCodes, setLoadingCodes] = useState(true);
 
   const handleNoteClick = (noteId: string) => {
     router.push(`/notes/${noteId}`);
+  };
+
+  const handleCodeClick = (codeId: string) => {
+    router.push(`/code/${codeId}`);
   };
 
   useEffect(() => {
@@ -39,7 +46,7 @@ export default function DashboardPage() {
         const response = await axios.get("http://localhost:3000/userNotes", {
           withCredentials: true,
         });
-        console.log(response)
+        console.log(response);
         setNotes(response.data.notes || []);
       } catch (error) {
         console.error("Error fetching notes:", error);
@@ -48,8 +55,23 @@ export default function DashboardPage() {
       }
     };
 
+    const fetchCodes = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/userCode", {
+          withCredentials: true,
+        });
+        console.log(response);
+        setCodes(response.data.codes || []);
+      } catch (error) {
+        console.error("Error fetching codes:", error);
+      } finally {
+        setLoadingCodes(false);
+      }
+    };
+
     if (session) {
       fetchNotes();
+      fetchCodes();
     }
   }, [session]);
 
@@ -68,7 +90,8 @@ export default function DashboardPage() {
   const chartData = Array.from({ length: 7 }).map((_, i) => {
     const date = subDays(new Date(), 6 - i);
     const dayName = format(date, "EEE");
-    const count = notes.filter((note) => {
+
+    const notesCount = notes.filter((note) => {
       const noteDateStr = note.createdAt;
       if (!noteDateStr) return false;
       try {
@@ -77,7 +100,18 @@ export default function DashboardPage() {
         return false;
       }
     }).length;
-    return { day: dayName, notes: count };
+
+    const codesCount = codes.filter((code) => {
+      const codeDateStr = code.createdAt;
+      if (!codeDateStr) return false;
+      try {
+        return isSameDay(new Date(codeDateStr), date);
+      } catch (e) {
+        return false;
+      }
+    }).length;
+
+    return { day: dayName, notes: notesCount, codes: codesCount };
   });
 
   return (
@@ -87,7 +121,13 @@ export default function DashboardPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back!
           </h2>
-          <p className="text-gray-500 text-lg">Here are your saved notes.</p>
+          <p className="text-gray-500 text-lg">
+            Here is an overview of your work.
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl font-bold text-gray-900">Your Notes</h3>
         </div>
 
         {loading ? (
@@ -145,6 +185,74 @@ export default function DashboardPage() {
           </div>
         )}
 
+        <div className="flex items-center justify-between mb-6 mt-12">
+          <h3 className="text-2xl font-bold text-gray-900">
+            Your Code Snippets
+          </h3>
+        </div>
+
+        {loadingCodes ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-48 bg-gray-200 rounded-xl animate-pulse"
+              ></div>
+            ))}
+          </div>
+        ) : codes.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {codes.map((code) => (
+              <div
+                key={code.id}
+                onClick={() => handleCodeClick(code.id)}
+                className="group bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 hover:border-gray-300 cursor-pointer flex flex-col justify-between h-40"
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                    {code.title || "Untitled Snippet"}
+                  </h3>
+                  {code.language && (
+                    <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {code.language}
+                    </span>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-gray-50 flex justify-end items-center">
+                  <span className="text-xs font-medium text-gray-400 group-hover:text-indigo-500 transition-colors">
+                    View details &rarr;
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300 mb-12">
+            <div className="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg
+                className="w-8 h-8 text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900">
+              No code snippets yet
+            </h3>
+            <p className="mt-1 text-gray-500">
+              Create your first code snippet to get started.
+            </p>
+          </div>
+        )}
+
         {/* Activity Chart Section */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 mb-6">
@@ -182,16 +290,30 @@ export default function DashboardPage() {
                     boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                     color: "#111827",
                   }}
-                  itemStyle={{ color: "#4F46E5" }}
+                  itemStyle={{ fontSize: "12px", fontWeight: "500" }}
                   cursor={{ stroke: "#9CA3AF", strokeWidth: 1 }}
                 />
+                <Legend
+                  iconType="circle"
+                  wrapperStyle={{ paddingTop: "10px", fontSize: "14px" }}
+                />
                 <Line
+                  name="Notes"
                   type="monotone"
                   dataKey="notes"
                   stroke="#4F46E5"
                   strokeWidth={3}
                   dot={{ fill: "#4F46E5", strokeWidth: 1, r: 4 }}
                   activeDot={{ r: 6, fill: "#4F46E5" }}
+                />
+                <Line
+                  name="Code Snippets"
+                  type="monotone"
+                  dataKey="codes"
+                  stroke="#10B981"
+                  strokeWidth={3}
+                  dot={{ fill: "#10B981", strokeWidth: 1, r: 4 }}
+                  activeDot={{ r: 6, fill: "#10B981" }}
                 />
               </LineChart>
             </ResponsiveContainer>

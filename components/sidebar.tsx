@@ -1,31 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, Layout, FileText, Users, BookMarked, Settings, LogOut } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { useSignOut } from "@/lib/sign-out"
-import { GroupsModal } from "@/components/groups-modal"
+import { useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Layout,
+  FileText,
+  Users,
+  BookMarked,
+  Code2,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useSignOut } from "@/lib/sign-out";
+import { GroupsModal } from "@/components/groups-modal";
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: Layout },
   { label: "Notes", href: "/notes", icon: FileText },
+  { label: "Code", href: "/code", icon: Code2 },
   { label: "Groups", href: "", icon: Users },
   { label: "Resources", href: "/resources", icon: BookMarked },
-]
+];
 
 export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false)
-  const pathname = usePathname()
-  const signOut = useSignOut()
-  const [showGroupsModal, setShowGroupsModal] = useState(false)
-  
-  const handleNavigation = (e: React.MouseEvent, item: typeof navItems[0]) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const pathname = usePathname();
+  const signOut = useSignOut();
+  const [showGroupsModal, setShowGroupsModal] = useState(false);
+
+  const handleNavigation = (
+    e: React.MouseEvent,
+    item: (typeof navItems)[0],
+  ) => {
     if (item.label === "Groups") {
-      e.preventDefault()
-      setShowGroupsModal(true)
+      e.preventDefault();
+      setShowGroupsModal(true);
     }
-  }
+  };
 
   return (
     <>
@@ -42,7 +56,9 @@ export function Sidebar() {
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                 <BookMarked className="w-5 h-5 text-primary" />
               </div>
-              <span className="font-semibold text-sidebar-foreground text-sm">StudyHub</span>
+              <span className="font-semibold text-sidebar-foreground text-sm">
+                StudyHub
+              </span>
             </div>
           )}
           <button
@@ -50,15 +66,20 @@ export function Sidebar() {
             className="p-1.5 hover:bg-sidebar-accent rounded-md transition-smooth text-sidebar-foreground hover:text-sidebar-accent-foreground"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+            {collapsed ? (
+              <ChevronRight className="w-5 h-5" />
+            ) : (
+              <ChevronLeft className="w-5 h-5" />
+            )}
           </button>
         </div>
 
         {/* Navigation Items */}
         <nav className="flex flex-col gap-1 p-3">
           {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+            const Icon = item.icon;
+            const isActive =
+              pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
@@ -73,9 +94,11 @@ export function Sidebar() {
                 title={collapsed ? item.label : ""}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
-                {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
+                {!collapsed && (
+                  <span className="text-sm font-medium">{item.label}</span>
+                )}
               </Link>
-            )
+            );
           })}
         </nav>
 
@@ -96,10 +119,7 @@ export function Sidebar() {
         </div>
       </aside>
 
-      <GroupsModal 
-        open={showGroupsModal} 
-        onOpenChange={setShowGroupsModal}
-      />
+      <GroupsModal open={showGroupsModal} onOpenChange={setShowGroupsModal} />
     </>
-  )
+  );
 }
