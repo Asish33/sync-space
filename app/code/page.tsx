@@ -7,6 +7,16 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 import { CodeEditor } from "@/components/code-editor";
 import AiChatPanel from "@/components/ai-chat-panel";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 export default function CodePage() {
   const router = useRouter();
@@ -70,50 +80,45 @@ export default function CodePage() {
         }
         getContextData={() => `Language: ${language}\n\nCode:\n${content}`}
       />
-      <div className="w-full max-w-5xl bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex flex-col gap-4">
-        <div>
-          <input
+      <Card className="w-full max-w-5xl shadow-sm flex flex-col gap-0 border-border">
+        <CardHeader className="flex flex-row items-start justify-between pb-4">
+          <div className="flex flex-col gap-1.5 w-full">
+            <CardTitle className="text-2xl font-semibold">
+              Code Editor
+            </CardTitle>
+            <CardDescription className="text-sm">
+              Write your code below. When you&apos;re ready, click Save.
+            </CardDescription>
+          </div>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-4">
+          <Input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="File name (e.g. main.js)"
-            className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="text-lg font-medium bg-background"
           />
-        </div>
 
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Code Editor
-            </h1>
-            <p className="mt-1 text-sm text-gray-500">
-              Write your code below. When you&apos;re ready, click Save.
-            </p>
+          <div className="mt-2 rounded-lg overflow-hidden border border-border">
+            <CodeEditor
+              content={content}
+              onChange={(value) => setContent(value)}
+              language={language}
+              onLanguageChange={(lang) => setLanguage(lang)}
+              editable={true}
+              height="500px"
+            />
           </div>
-        </div>
+        </CardContent>
 
-        <div className="mt-2">
-          <CodeEditor
-            content={content}
-            onChange={(value) => setContent(value)}
-            language={language}
-            onLanguageChange={(lang) => setLanguage(lang)}
-            editable={true}
-            height="500px"
-          />
-        </div>
-
-        <div className="flex justify-end pt-4">
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={isSaving}
-            className="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:opacity-60"
-          >
+        <CardFooter className="flex justify-end pt-4 border-t border-border">
+          <Button type="button" onClick={handleSave} disabled={isSaving}>
             {isSaving ? "Saving..." : "Save code"}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </CardFooter>
+      </Card>
     </main>
   );
 }

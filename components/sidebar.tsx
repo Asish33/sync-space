@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSignOut } from "@/lib/sign-out";
 import { GroupsModal } from "@/components/groups-modal";
@@ -61,9 +62,11 @@ export function Sidebar() {
               </span>
             </div>
           )}
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="p-1.5 hover:bg-sidebar-accent rounded-md transition-smooth text-sidebar-foreground hover:text-sidebar-accent-foreground"
+            className="h-8 w-8 hover:bg-sidebar-accent text-sidebar-foreground hover:text-sidebar-accent-foreground"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
@@ -71,7 +74,7 @@ export function Sidebar() {
             ) : (
               <ChevronLeft className="w-5 h-5" />
             )}
-          </button>
+          </Button>
         </div>
 
         {/* Navigation Items */}
@@ -104,10 +107,11 @@ export function Sidebar() {
 
         {/* Bottom Actions */}
         <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-sidebar-border space-y-1">
-          <button
+          <Button
+            variant="ghost"
             className={cn(
-              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive",
-              collapsed && "justify-center",
+              "w-full flex items-center h-auto gap-3 px-3 py-2.5 rounded-lg transition-smooth text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive justify-start",
+              collapsed && "justify-center px-0",
             )}
             title={collapsed ? "Logout" : ""}
             aria-label="Logout"
@@ -115,7 +119,7 @@ export function Sidebar() {
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
             {!collapsed && <span className="text-sm font-medium">Logout</span>}
-          </button>
+          </Button>
         </div>
       </aside>
 

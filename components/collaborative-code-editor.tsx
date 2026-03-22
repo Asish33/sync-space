@@ -8,6 +8,14 @@ import { MonacoBinding } from "y-monaco";
 import type * as monaco from "monaco-editor";
 import { Play } from "lucide-react";
 import { LANGUAGES, STARTER_CODE } from "@/lib/code-languages";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import "./code-editor.css";
 
 interface CollaborativeCodeEditorProps {
@@ -300,8 +308,7 @@ function MonacoEditorInner({
 
       let outputText = "";
       if (stdout) outputText += stdout;
-      if (stderr)
-        outputText += (outputText ? "\n" : "") + `Stderr:\n${stderr}`;
+      if (stderr) outputText += (outputText ? "\n" : "") + `Stderr:\n${stderr}`;
       if (compileOutput)
         outputText +=
           (outputText ? "\n" : "") + `Compile Output:\n${compileOutput}`;
@@ -323,22 +330,30 @@ function MonacoEditorInner({
       >
         <div className="flex items-center gap-3">
           {/* Language Selector */}
-          <select
+          <Select
             value={language}
-            onChange={(e) => handleLanguageChange(e.target.value)}
-            className="language-select bg-transparent border border-gray-600 text-xs rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            style={{ color: theme === "vs-dark" ? "#ccc" : "#333" }}
+            onValueChange={(val) => {
+              if (val) handleLanguageChange(val);
+            }}
           >
-            {LANGUAGES.map((lang) => (
-              <option
-                key={lang.value}
-                value={lang.value}
-                style={{ background: "#1e1e1e", color: "#ccc" }}
-              >
-                {lang.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger
+              className="w-[140px] h-8 text-xs bg-transparent border-gray-600 focus:ring-1 focus:ring-blue-500 rounded-md"
+              style={{ color: theme === "vs-dark" ? "#ccc" : "#333" }}
+            >
+              <SelectValue placeholder="Select Language" />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGES.map((lang) => (
+                <SelectItem
+                  key={lang.value}
+                  value={lang.value}
+                  className="text-xs"
+                >
+                  {lang.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {/* Connection Status */}
           <div className="flex items-center gap-1.5">
@@ -362,27 +377,26 @@ function MonacoEditorInner({
           </span>
 
           {/* Run Code Button */}
-          <button
+          <Button
+            size="sm"
             onClick={handleRunCode}
             disabled={isRunning}
-            className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors disabled:opacity-50"
+            className="h-8 gap-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium"
           >
             <Play className="w-3 h-3" />
             {isRunning ? "Running..." : "Run Code"}
-          </button>
+          </Button>
 
           {/* Theme Toggle */}
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")}
-            className="px-2 py-1 border rounded-md text-xs transition-colors"
-            style={{
-              borderColor: theme === "vs-dark" ? "#555" : "#ccc",
-              color: theme === "vs-dark" ? "#ccc" : "#333",
-              background: "transparent",
-            }}
+            className="h-8 text-xs border-gray-600 bg-transparent text-foreground hover:bg-muted"
+            style={{ color: theme === "vs-dark" ? "#ccc" : "#333" }}
           >
             {theme === "vs-dark" ? "Light" : "Dark"}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -481,13 +495,15 @@ function MonacoEditorInner({
             >
               Output
             </span>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => setOutput(null)}
-              className="text-xs px-2 py-0.5 rounded hover:bg-gray-700/30 transition-colors"
+              className="h-6 px-2 py-0.5 text-xs hover:bg-gray-700/30 transition-colors"
               style={{ color: theme === "vs-dark" ? "#888" : "#666" }}
             >
               ✕ Close
-            </button>
+            </Button>
           </div>
           <pre
             className="p-3 text-xs font-mono overflow-auto max-h-[200px]"

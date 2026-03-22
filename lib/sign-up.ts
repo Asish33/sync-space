@@ -25,5 +25,6 @@ export async function signUpWithEmail({
     throw new Error(error.message ?? "Failed to sign up");
   }
 
+  
   return data;
 }

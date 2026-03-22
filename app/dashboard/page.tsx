@@ -16,6 +16,8 @@ import {
   Legend,
 } from "recharts";
 import { format, subDays, isSameDay, parseISO } from "date-fns";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -142,27 +144,27 @@ export default function DashboardPage() {
         ) : notes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {notes.map((note) => (
-              <div
+              <Card
                 key={note.id}
                 onClick={() => handleNoteClick(note.id)}
-                className="group bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 hover:border-gray-300 cursor-pointer flex flex-col justify-between h-40"
+                className="group hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between h-40 border-border bg-card"
               >
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                <CardHeader className="p-6 pb-0">
+                  <CardTitle className="text-xl line-clamp-2 group-hover:text-primary transition-colors">
                     {note.title}
-                  </h3>
-                </div>
+                  </CardTitle>
+                </CardHeader>
 
-                <div className="pt-4 border-t border-gray-50 flex justify-end items-center">
-                  <span className="text-xs font-medium text-gray-400 group-hover:text-indigo-500 transition-colors">
+                <CardContent className="p-6 pt-0 mt-auto flex justify-end items-center">
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors">
                     View details &rarr;
                   </span>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300 mb-12">
+          <div className="text-center py-20 bg-card rounded-2xl border border-dashed border-border mb-12">
             <div className="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
                 className="w-8 h-8 text-gray-300"
@@ -203,32 +205,32 @@ export default function DashboardPage() {
         ) : codes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {codes.map((code) => (
-              <div
+              <Card
                 key={code.id}
                 onClick={() => handleCodeClick(code.id)}
-                className="group bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-200 hover:border-gray-300 cursor-pointer flex flex-col justify-between h-40"
+                className="group hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between h-40 border-border bg-card"
               >
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                <CardHeader className="p-6 pb-0 flex flex-col items-start">
+                  <CardTitle className="text-xl line-clamp-2 group-hover:text-primary transition-colors">
                     {code.title || "Untitled Snippet"}
-                  </h3>
+                  </CardTitle>
                   {code.language && (
-                    <span className="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    <Badge variant="secondary" className="mt-2 font-mono">
                       {code.language}
-                    </span>
+                    </Badge>
                   )}
-                </div>
+                </CardHeader>
 
-                <div className="pt-4 border-t border-gray-50 flex justify-end items-center">
-                  <span className="text-xs font-medium text-gray-400 group-hover:text-indigo-500 transition-colors">
+                <CardContent className="p-6 pt-0 mt-auto flex justify-end items-center">
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors">
                     View details &rarr;
                   </span>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300 mb-12">
+          <div className="text-center py-20 bg-card rounded-2xl border border-dashed border-border mb-12">
             <div className="h-16 w-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
                 className="w-8 h-8 text-gray-300"
@@ -254,71 +256,73 @@ export default function DashboardPage() {
         )}
 
         {/* Activity Chart Section */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">
-            Activity Trends
-          </h3>
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  stroke="#E5E7EB"
-                />
-                <XAxis
-                  dataKey="day"
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  dy={10}
-                />
-                <YAxis
-                  stroke="#9CA3AF"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `${value}`}
-                  allowDecimals={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#FFFFFF",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    color: "#111827",
-                  }}
-                  itemStyle={{ fontSize: "12px", fontWeight: "500" }}
-                  cursor={{ stroke: "#9CA3AF", strokeWidth: 1 }}
-                />
-                <Legend
-                  iconType="circle"
-                  wrapperStyle={{ paddingTop: "10px", fontSize: "14px" }}
-                />
-                <Line
-                  name="Notes"
-                  type="monotone"
-                  dataKey="notes"
-                  stroke="#4F46E5"
-                  strokeWidth={3}
-                  dot={{ fill: "#4F46E5", strokeWidth: 1, r: 4 }}
-                  activeDot={{ r: 6, fill: "#4F46E5" }}
-                />
-                <Line
-                  name="Code Snippets"
-                  type="monotone"
-                  dataKey="codes"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                  dot={{ fill: "#10B981", strokeWidth: 1, r: 4 }}
-                  activeDot={{ r: 6, fill: "#10B981" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        <Card className="p-6 shadow-sm bg-card border-border">
+          <CardHeader className="px-0 pt-0">
+            <CardTitle className="text-lg font-bold">Activity Trends</CardTitle>
+          </CardHeader>
+          <CardContent className="px-0 pb-0">
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#E5E7EB"
+                  />
+                  <XAxis
+                    dataKey="day"
+                    stroke="#9CA3AF"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    dy={10}
+                  />
+                  <YAxis
+                    stroke="#9CA3AF"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}`}
+                    allowDecimals={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                      color: "#111827",
+                    }}
+                    itemStyle={{ fontSize: "12px", fontWeight: "500" }}
+                    cursor={{ stroke: "#9CA3AF", strokeWidth: 1 }}
+                  />
+                  <Legend
+                    iconType="circle"
+                    wrapperStyle={{ paddingTop: "10px", fontSize: "14px" }}
+                  />
+                  <Line
+                    name="Notes"
+                    type="monotone"
+                    dataKey="notes"
+                    stroke="#4F46E5"
+                    strokeWidth={3}
+                    dot={{ fill: "#4F46E5", strokeWidth: 1, r: 4 }}
+                    activeDot={{ r: 6, fill: "#4F46E5" }}
+                  />
+                  <Line
+                    name="Code Snippets"
+                    type="monotone"
+                    dataKey="codes"
+                    stroke="#10B981"
+                    strokeWidth={3}
+                    dot={{ fill: "#10B981", strokeWidth: 1, r: 4 }}
+                    activeDot={{ r: 6, fill: "#10B981" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

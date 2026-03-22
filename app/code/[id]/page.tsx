@@ -7,6 +7,9 @@ import axios from "axios";
 import { toast } from "sonner";
 import { CodeEditor } from "@/components/code-editor";
 import AiChatPanel from "@/components/ai-chat-panel";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ChevronLeft } from "lucide-react";
 
 export default function CodeFilePage() {
   const params = useParams();
@@ -104,12 +107,9 @@ export default function CodeFilePage() {
           <h2 className="text-2xl font-bold text-gray-900">
             Code file not found
           </h2>
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="mt-4 px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800"
-          >
+          <Button onClick={() => router.push("/dashboard")} className="mt-4">
             Back to Dashboard
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -125,52 +125,41 @@ export default function CodeFilePage() {
       />
       <div className="max-w-5xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
-          <button
+          <Button
+            variant="ghost"
             onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-transparent px-0"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            <ChevronLeft className="w-5 h-5" />
             Back to Dashboard
-          </button>
+          </Button>
 
-          <button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
-          >
+          <Button onClick={handleSave} disabled={isSaving}>
             {isSaving ? "Saving..." : "Save"}
-          </button>
+          </Button>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            {codeFile.title}
-          </h1>
+        <Card className="border-border shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-3xl font-bold">
+              {codeFile.title}
+            </CardTitle>
+          </CardHeader>
 
-          <div className="rounded-lg overflow-hidden">
-            <CodeEditor
-              key={codeFile.id}
-              content={content}
-              language={language}
-              onChange={(value) => setContent(value)}
-              onLanguageChange={(lang) => setLanguage(lang)}
-              editable={true}
-              height="500px"
-            />
-          </div>
-        </div>
+          <CardContent>
+            <div className="rounded-lg overflow-hidden border border-border">
+              <CodeEditor
+                key={codeFile.id}
+                content={content}
+                language={language}
+                onChange={(value) => setContent(value)}
+                onLanguageChange={(lang) => setLanguage(lang)}
+                editable={true}
+                height="500px"
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </main>
   );

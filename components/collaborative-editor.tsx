@@ -14,7 +14,14 @@ interface CollaborativeEditorProps {
 }
 
 const getColorForName = (name: string) => {
-  const colors = ["#ef4444", "#f59e0b", "#10b981", "#3b82f6", "#8b5cf6", "#ec4899"];
+  const colors = [
+    "#ef4444",
+    "#f59e0b",
+    "#10b981",
+    "#3b82f6",
+    "#8b5cf6",
+    "#ec4899",
+  ];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -29,14 +36,21 @@ interface CursorInfo {
   left: number;
 }
 
-export function CollaborativeEditor({ roomId, username }: CollaborativeEditorProps) {
+export function CollaborativeEditor({
+  roomId,
+  username,
+}: CollaborativeEditorProps) {
   const [provider, setProvider] = useState<WebsocketProvider | null>(null);
   const [ydoc, setYdoc] = useState<Y.Doc | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const doc = new Y.Doc();
-    const wsProvider = new WebsocketProvider("ws://localhost:1234", roomId, doc);
+    const wsProvider = new WebsocketProvider(
+      "ws://localhost:1234",
+      roomId,
+      doc,
+    );
 
     wsProvider.awareness.setLocalStateField("user", {
       name: username,
@@ -97,7 +111,8 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
     editable: true,
     editorProps: {
       attributes: {
-        class: "prose max-w-none focus:outline-none min-h-[500px] px-4 py-3 bg-white border rounded-md shadow-sm",
+        class:
+          "prose max-w-none focus:outline-none min-h-[500px] px-4 py-3 bg-background border border-border rounded-lg shadow-sm",
       },
     },
   });
@@ -108,7 +123,10 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
 
     const broadcastCursor = () => {
       const { from, to } = editor.state.selection;
-      provider.awareness.setLocalStateField("cursor", { anchor: from, head: to });
+      provider.awareness.setLocalStateField("cursor", {
+        anchor: from,
+        head: to,
+      });
     };
 
     editor.on("selectionUpdate", broadcastCursor);
@@ -138,7 +156,9 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
     const containerRect = containerRef.current.getBoundingClientRect();
     const newCursors: CursorInfo[] = [];
 
-    console.log(`[cursors] awareness states: ${states.size}, localId: ${localId}`);
+    console.log(
+      `[cursors] awareness states: ${states.size}, localId: ${localId}`,
+    );
 
     states.forEach((state: any, clientId: number) => {
       if (clientId === localId) return;
@@ -155,7 +175,9 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
           top: coords.top - containerRect.top,
           left: coords.left - containerRect.left,
         };
-        console.log(`[cursors] rendering cursor for ${cursorInfo.name} at (${cursorInfo.left}, ${cursorInfo.top})`);
+        console.log(
+          `[cursors] rendering cursor for ${cursorInfo.name} at (${cursorInfo.left}, ${cursorInfo.top})`,
+        );
         newCursors.push(cursorInfo);
       } catch (e) {
         console.warn("[cursors] coordsAtPos failed:", e);
@@ -198,7 +220,9 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-2">
-        <span className="text-xs text-muted-foreground">Collaborative Editor</span>
+        <span className="text-xs text-muted-foreground">
+          Collaborative Editor
+        </span>
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-green-500" />
           <span className="text-xs text-muted-foreground">Connected</span>

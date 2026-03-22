@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Underline from "@tiptap/extension-underline"
-import Link from "@tiptap/extension-link"
-import Highlight from "@tiptap/extension-highlight"
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import Highlight from "@tiptap/extension-highlight";
 import {
   Bold,
   Italic,
@@ -18,16 +18,21 @@ import {
   ListOrdered,
   Quote,
   Highlighter,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface TiptapEditorProps {
-  content: string
-  onChange?: (content: string) => void
-  editable?: boolean
+  content: string;
+  onChange?: (content: string) => void;
+  editable?: boolean;
 }
 
-export function TiptapEditor({ content, onChange, editable = true }: TiptapEditorProps) {
+export function TiptapEditor({
+  content,
+  onChange,
+  editable = true,
+}: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -41,39 +46,59 @@ export function TiptapEditor({ content, onChange, editable = true }: TiptapEdito
     ],
     content,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML())
+      onChange?.(editor.getHTML());
     },
     editable,
-  })
+  });
 
   if (!editor) {
-    return null
+    return null;
   }
 
-  const toggleBold = () => editor.chain().focus().toggleBold().run()
-  const toggleItalic = () => editor.chain().focus().toggleItalic().run()
-  const toggleUnderline = () => editor.chain().focus().toggleUnderline().run()
-  const toggleCode = () => editor.chain().focus().toggleCode().run()
-  const toggleHeading1 = () => editor.chain().focus().toggleHeading({ level: 1 }).run()
-  const toggleHeading2 = () => editor.chain().focus().toggleHeading({ level: 2 }).run()
-  const toggleBulletList = () => editor.chain().focus().toggleBulletList().run()
-  const toggleOrderedList = () => editor.chain().focus().toggleOrderedList().run()
-  const toggleBlockquote = () => editor.chain().focus().toggleBlockquote().run()
-  const toggleHighlight = () => editor.chain().focus().toggleHighlight().run()
+  const toggleBold = () => editor.chain().focus().toggleBold().run();
+  const toggleItalic = () => editor.chain().focus().toggleItalic().run();
+  const toggleUnderline = () => editor.chain().focus().toggleUnderline().run();
+  const toggleCode = () => editor.chain().focus().toggleCode().run();
+  const toggleHeading1 = () =>
+    editor.chain().focus().toggleHeading({ level: 1 }).run();
+  const toggleHeading2 = () =>
+    editor.chain().focus().toggleHeading({ level: 2 }).run();
+  const toggleBulletList = () =>
+    editor.chain().focus().toggleBulletList().run();
+  const toggleOrderedList = () =>
+    editor.chain().focus().toggleOrderedList().run();
+  const toggleBlockquote = () =>
+    editor.chain().focus().toggleBlockquote().run();
+  const toggleHighlight = () => editor.chain().focus().toggleHighlight().run();
 
   return (
     <div className="flex flex-col gap-4">
       {editable && (
         <div className="flex flex-wrap gap-2 p-3 bg-sidebar border border-border rounded-lg">
-          <ToolbarButton onClick={toggleBold} isActive={editor.isActive("bold")} icon={Bold} title="Bold" />
-          <ToolbarButton onClick={toggleItalic} isActive={editor.isActive("italic")} icon={Italic} title="Italic" />
+          <ToolbarButton
+            onClick={toggleBold}
+            isActive={editor.isActive("bold")}
+            icon={Bold}
+            title="Bold"
+          />
+          <ToolbarButton
+            onClick={toggleItalic}
+            isActive={editor.isActive("italic")}
+            icon={Italic}
+            title="Italic"
+          />
           <ToolbarButton
             onClick={toggleUnderline}
             isActive={editor.isActive("underline")}
             icon={UnderlineIcon}
             title="Underline"
           />
-          <ToolbarButton onClick={toggleCode} isActive={editor.isActive("code")} icon={Code} title="Code" />
+          <ToolbarButton
+            onClick={toggleCode}
+            isActive={editor.isActive("code")}
+            icon={Code}
+            title="Code"
+          />
 
           <div className="w-px bg-border" />
 
@@ -124,28 +149,32 @@ export function TiptapEditor({ content, onChange, editable = true }: TiptapEdito
         className="prose prose-sm dark:prose-invert max-w-none min-h-96 p-6 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
       />
     </div>
-  )
+  );
 }
 
 interface ToolbarButtonProps {
-  onClick: () => void
-  isActive: boolean
-  icon: React.ComponentType<{ className?: string }>
-  title: string
+  onClick: () => void;
+  isActive: boolean;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
 }
 
-function ToolbarButton({ onClick, isActive, icon: Icon, title }: ToolbarButtonProps) {
+function ToolbarButton({
+  onClick,
+  isActive,
+  icon: Icon,
+  title,
+}: ToolbarButtonProps) {
   return (
-    <button
+    <Button
+      variant={isActive ? "default" : "ghost"}
+      size="icon"
       onClick={onClick}
-      className={cn(
-        "p-2 rounded-md transition-all duration-200 hover:bg-background",
-        isActive && "bg-primary text-primary-foreground",
-      )}
+      className="h-8 w-8"
       title={title}
       type="button"
     >
       <Icon className="w-4 h-4" />
-    </button>
-  )
+    </Button>
+  );
 }

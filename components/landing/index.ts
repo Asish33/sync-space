@@ -1,0 +1,11 @@
+export { default as FloatingBlobs } from "./FloatingBlobs";
+export { default as GlassNavbar } from "./GlassNavbar";
+export { default as HeroSection } from "./HeroSection";
+export { default as ProductPreview } from "./ProductPreview";
+export { default as ProblemSolution } from "./ProblemSolution";
+export { default as FeaturesGrid } from "./FeaturesGrid";
+export { default as HowItWorks } from "./HowItWorks";
+export { default as AIHighlight } from "./AIHighlight";
+export { default as Testimonials } from "./Testimonials";
+export { default as FinalCTA } from "./FinalCTA";
+export { default as Footer } from "./Footer";

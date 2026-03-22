@@ -17,6 +17,15 @@ import {
   Moon,
   Sun,
 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 // Animation variants
 const fadeInUp = {
@@ -101,7 +110,7 @@ function HeroUIMock() {
       className="relative w-full max-w-4xl mx-auto mt-12 md:mt-16"
     >
       {/* Main UI Container */}
-      <div className="rounded-2xl border border-border/60 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden">
+      <Card className="rounded-2xl border-border/60 bg-card/80 backdrop-blur-xl shadow-2xl overflow-hidden border">
         {/* Window Header */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40 bg-muted/30">
           <div className="flex gap-1.5">
@@ -129,7 +138,7 @@ function HeroUIMock() {
                 <div className="flex-1">
                   <div className="text-[11px] font-medium">Alex</div>
                   <div className="text-[10px] text-muted-foreground bg-muted/50 rounded-lg px-2 py-1 mt-0.5">
-                    Ready for today's session? 🚀
+                    Ready for today's session?
                   </div>
                 </div>
               </div>
@@ -249,19 +258,21 @@ function HeroUIMock() {
               transition={{ duration: 0.5, delay: 1.5 }}
               className="mt-4"
             >
-              <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 border border-primary/20 rounded-lg p-2 shadow-glow-sm">
-                <div className="flex items-center gap-1.5 text-[10px] font-medium text-primary">
-                  <Sparkles className="w-3 h-3" />
-                  Summary ready ✨
-                </div>
-                <div className="text-[9px] text-muted-foreground mt-1">
-                  Click to view AI-generated notes
-                </div>
-              </div>
+              <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 border border-primary/20 rounded-lg p-2 shadow-glow-sm">
+                <CardContent className="p-0">
+                  <div className="flex items-center gap-1.5 text-[10px] font-medium text-primary">
+                    <Sparkles className="w-3 h-3" />
+                    Summary ready
+                  </div>
+                  <div className="text-[9px] text-muted-foreground mt-1">
+                    Click to view AI-generated notes
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Floating glow effects */}
       <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-3xl" />
@@ -286,15 +297,20 @@ function FeatureCard({
       variants={fadeInUp}
       custom={index}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group relative p-6 rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all duration-300 hover:shadow-glow-sm"
     >
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-primary/10 transition-all">
-        <Icon className="w-6 h-6 text-primary" />
-      </div>
-      <h3 className="font-semibold text-lg text-foreground mb-2">{title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">
-        {description}
-      </p>
+      <Card className="group relative h-full rounded-2xl border-border/60 bg-card/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all duration-300 hover:shadow-glow-sm p-6">
+        <CardContent className="p-0">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-primary/10 transition-all">
+            <Icon className="w-6 h-6 text-primary" />
+          </div>
+          <h3 className="font-semibold text-lg text-foreground mb-2">
+            {title}
+          </h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {description}
+          </p>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 }
@@ -341,23 +357,25 @@ function TestimonialCard({
   index: number;
 }) {
   return (
-    <motion.div
-      variants={scaleIn}
-      custom={index}
-      className="p-6 rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm"
-    >
-      <p className="text-foreground/90 text-base leading-relaxed mb-4 italic">
-        "{quote}"
-      </p>
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary font-semibold">
-          {author.charAt(0)}
-        </div>
-        <div>
-          <div className="font-medium text-foreground text-sm">{author}</div>
-          <div className="text-muted-foreground text-xs">{role}</div>
-        </div>
-      </div>
+    <motion.div variants={scaleIn} custom={index}>
+      <Card className="h-full p-6 rounded-2xl border-border/60 bg-card/50 backdrop-blur-sm">
+        <CardContent className="p-0">
+          <p className="text-foreground/90 text-base leading-relaxed mb-4 italic">
+            "{quote}"
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-primary font-semibold">
+              {author.charAt(0)}
+            </div>
+            <div>
+              <div className="font-medium text-foreground text-sm">
+                {author}
+              </div>
+              <div className="text-muted-foreground text-xs">{role}</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 }
@@ -505,12 +523,14 @@ export default function HomePage() {
             variants={stagger}
             className="space-y-6"
           >
-            <motion.div
-              variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary font-medium"
-            >
-              <Sparkles className="w-4 h-4" />
-              Powered by AI
+            <motion.div variants={fadeInUp} className="mb-6">
+              <Badge
+                variant="outline"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border-primary/20 text-sm text-primary font-medium hover:bg-primary/20"
+              >
+                <Sparkles className="w-4 h-4" />
+                Powered by AI
+              </Badge>
             </motion.div>
 
             <motion.h1
@@ -681,9 +701,14 @@ export default function HomePage() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm text-primary font-medium mb-6">
-                  <Sparkles className="w-4 h-4" />
-                  AI-Powered
+                <div className="mb-6">
+                  <Badge
+                    variant="outline"
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border-primary/20 text-sm text-primary font-medium hover:bg-primary/20"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    AI-Powered
+                  </Badge>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
                   Your built-in AI study partner.
@@ -714,39 +739,41 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="rounded-2xl border border-border/60 bg-card/80 backdrop-blur-xl p-6 shadow-glow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">
-                      AI Assistant
+              <Card className="rounded-2xl border-border/60 bg-card/80 backdrop-blur-xl p-6 shadow-glow">
+                <CardContent className="p-0">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-primary-foreground" />
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      Ready to help
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="bg-muted/50 rounded-xl p-3 text-sm text-muted-foreground">
-                    "Summarize today's session"
-                  </div>
-                  <div className="bg-primary/10 rounded-xl p-3 text-sm">
-                    <div className="text-primary font-medium mb-1">
-                      Summary generated:
-                    </div>
-                    <div className="text-foreground/80 text-xs leading-relaxed">
-                      Today we covered arrays, linked lists, and their
-                      trade-offs. Key takeaway: arrays for fast access, linked
-                      lists for fast insertion...
+                    <div>
+                      <div className="font-semibold text-foreground">
+                        AI Assistant
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Ready to help
+                      </div>
                     </div>
                   </div>
-                  <div className="bg-muted/50 rounded-xl p-3 text-sm text-muted-foreground">
-                    "Explain this concept simply"
+                  <div className="space-y-3">
+                    <div className="bg-muted/50 rounded-xl p-3 text-sm text-muted-foreground">
+                      "Summarize today's session"
+                    </div>
+                    <div className="bg-primary/10 rounded-xl p-3 text-sm">
+                      <div className="text-primary font-medium mb-1">
+                        Summary generated:
+                      </div>
+                      <div className="text-foreground/80 text-xs leading-relaxed">
+                        Today we covered arrays, linked lists, and their
+                        trade-offs. Key takeaway: arrays for fast access, linked
+                        lists for fast insertion...
+                      </div>
+                    </div>
+                    <div className="bg-muted/50 rounded-xl p-3 text-sm text-muted-foreground">
+                      "Explain this concept simply"
+                    </div>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
               <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/10 rounded-full blur-3xl" />
             </motion.div>
           </div>
@@ -789,45 +816,49 @@ export default function HomePage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative p-8 md:p-12 rounded-3xl border border-border/60 bg-gradient-to-b from-primary/5 via-card/50 to-card/30 backdrop-blur-sm text-center overflow-hidden"
+            className="relative"
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-              Start your next study session today.
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Free to start. No pressure. No credit card.
-            </p>
+            <Card className="p-8 md:p-12 rounded-3xl border-border/60 bg-gradient-to-b from-primary/5 via-card/50 to-card/30 backdrop-blur-sm text-center overflow-hidden">
+              <CardContent className="p-0">
+                <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
+                  Start your next study session today.
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Free to start. No pressure. No credit card.
+                </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
-              <Link href="/dashboard">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto rounded-xl gap-2 bg-gradient-to-r from-primary to-primary/80 hover:shadow-xl transition-all text-base px-8 h-12"
-                >
-                  Continue
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
+                  <Link href="/dashboard">
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto rounded-xl gap-2 bg-gradient-to-r from-primary to-primary/80 hover:shadow-xl transition-all text-base px-8 h-12"
+                    >
+                      Continue
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
 
-            {/* Trust signals */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-600" />
-                Free forever plan
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-600" />
-                No spam
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-600" />
-                Instant access
-              </div>
-            </div>
+                {/* Trust signals */}
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-600" />
+                    Free forever plan
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-600" />
+                    No spam
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-600" />
+                    Instant access
+                  </div>
+                </div>
 
-            {/* Background glow */}
-            <div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-3xl" />
+                {/* Background glow */}
+                <div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 rounded-full blur-3xl" />
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </AnimatedSection>

@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import { useSignOut } from "@/lib/sign-out";
 export function Navbar() {
   const signOut = useSignOut();
@@ -32,11 +33,11 @@ export function Navbar() {
         <div className="flex-1 max-w-md">
           {/* Skeleton or empty state could go here, but for now matching the structure without unique content */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <Input
               type="text"
               placeholder="Search notes, groups..."
-              className="w-full pl-9 pr-3 py-2 rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground border border-border transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full pl-9 bg-secondary"
             />
           </div>
         </div>
@@ -51,11 +52,11 @@ export function Navbar() {
       {/* Search */}
       <div className="flex-1 max-w-md">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <Input
             type="text"
             placeholder="Search notes, groups..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-secondary text-foreground placeholder:text-muted-foreground border border-border transition-smooth focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full pl-9 bg-secondary"
           />
         </div>
       </div>

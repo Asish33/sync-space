@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface ChatMessage {
   role: "user" | "ai";
@@ -87,12 +89,13 @@ User Question: ${trimmed}`;
     <>
       {/* Toggle Button */}
       {!isOpen && (
-        <button
+        <Button
           onClick={() => setIsOpen(true)}
-          className="fixed right-6 bottom-6 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+          className="fixed right-6 bottom-6 z-50 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+          size="lg"
         >
           <svg
-            className="w-5 h-5"
+            className="w-5 h-5 mr-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -105,7 +108,7 @@ User Question: ${trimmed}`;
             />
           </svg>
           Ask AI
-        </button>
+        </Button>
       )}
 
       {/* Panel */}
@@ -134,9 +137,11 @@ User Question: ${trimmed}`;
               </svg>
               <h2 className="text-lg font-semibold text-white">Ask AI</h2>
             </div>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setIsOpen(false)}
-              className="text-white/80 hover:text-white transition-colors p-1 rounded-md hover:bg-white/10"
+              className="text-white/80 hover:text-white hover:bg-white/10"
             >
               <svg
                 className="w-5 h-5"
@@ -151,7 +156,7 @@ User Question: ${trimmed}`;
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </button>
+            </Button>
           </div>
 
           {/* Messages */}
@@ -197,7 +202,9 @@ User Question: ${trimmed}`;
                   </div>
 
                   {msg.role === "ai" && (
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => {
                         const codeRegex =
                           /```([a-zA-Z0-9-]*)\r?\n([\s\S]*?)```/g;
@@ -218,10 +225,10 @@ User Question: ${trimmed}`;
                             : msg.content;
                         onAddToNotes(finalRawContent, finalMarkdownContent);
                       }}
-                      className="mt-2 flex items-center gap-1.5 text-xs font-medium text-violet-600 hover:text-violet-800 transition-colors px-2 py-1 rounded-md hover:bg-violet-50"
+                      className="mt-2 text-violet-600 hover:text-violet-800 hover:bg-violet-50 h-7 text-xs px-2"
                     >
                       <svg
-                        className="w-3.5 h-3.5"
+                        className="w-3.5 h-3.5 mr-1.5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -234,7 +241,7 @@ User Question: ${trimmed}`;
                         />
                       </svg>
                       Add to Notes
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -267,7 +274,7 @@ User Question: ${trimmed}`;
           {/* Input */}
           <div className="border-t border-gray-200 px-4 py-3 bg-gray-50">
             <div className="flex items-center gap-2">
-              <input
+              <Input
                 ref={inputRef}
                 type="text"
                 value={input}
@@ -275,12 +282,13 @@ User Question: ${trimmed}`;
                 onKeyDown={handleKeyDown}
                 placeholder="Ask a question..."
                 disabled={isLoading}
-                className="flex-1 px-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-black placeholder-gray-400 disabled:opacity-50"
+                className="flex-1 bg-white border-gray-200"
               />
-              <button
+              <Button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="p-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl hover:shadow-md disabled:opacity-40 transition-all duration-200"
+                size="icon"
+                className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl shadow-sm hover:shadow-md"
               >
                 <svg
                   className="w-4 h-4"
@@ -295,7 +303,7 @@ User Question: ${trimmed}`;
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                   />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
