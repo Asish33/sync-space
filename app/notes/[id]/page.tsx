@@ -11,7 +11,8 @@ import { useNoteEditor } from "@/hooks/use-note-editor";
 import AiChatPanel from "@/components/ai-chat-panel";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
+import { DashboardShell } from "@/components/dashboard-shell";
 
 export default function NotePage() {
   const params = useParams();
@@ -27,6 +28,11 @@ export default function NotePage() {
     content: note?.content || "",
     editable: true,
   });
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Auth check
   useEffect(() => {
@@ -103,10 +109,10 @@ export default function NotePage() {
     }
   };
 
-  if (isPending) {
+  if (!isMounted || isPending) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+      <div className="min-h-screen w-full bg-[#05070D] flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-[#3DE1A1]" />
       </div>
     );
   }
@@ -117,72 +123,106 @@ export default function NotePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading note...</p>
+      <DashboardShell>
+        <div className="w-full min-h-[calc(100vh-4rem)] bg-[#05070D] flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-10 w-10 animate-spin text-[#3DE1A1] mx-auto" />
+            <p className="mt-4 text-[#A0A8B8] font-medium tracking-wide">
+              Loading note...
+            </p>
+          </div>
         </div>
-      </div>
+      </DashboardShell>
     );
   }
 
   if (!note) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Note not found</h2>
-          <Button onClick={() => router.push("/dashboard")} className="mt-4">
-            Back to Dashboard
-          </Button>
+      <DashboardShell>
+        <div className="w-full min-h-[calc(100vh-4rem)] bg-[#05070D] flex items-center justify-center">
+          <div className="text-center bg-[#070A14] p-12 rounded-3xl border border-white/[0.08] max-w-md mx-auto shadow-2xl">
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Note not found
+            </h2>
+            <p className="text-[#A0A8B8] mb-8">
+              This note may have been deleted or doesn't exist.
+            </p>
+            <Button
+              onClick={() => router.push("/dashboard")}
+              className="rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 w-full"
+            >
+              Back to Dashboard
+            </Button>
+          </div>
         </div>
-      </div>
+      </DashboardShell>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 relative">
-      <AiChatPanel
-        onAddToNotes={handleAddToNotes}
-        getContextData={() => {
-          const editorAny = editor as any;
-          return (
-            editorAny?.storage?.markdown?.getMarkdown?.() ||
-            editorAny?.getMarkdown?.() ||
-            note?.content ||
-            ""
-          );
-        }}
-      />
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6 flex items-center justify-between">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-transparent px-0"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Back to Dashboard
-          </Button>
-
-          <div className="flex items-center gap-4">
-            <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving ? "Saving..." : "Save"}
+    <DashboardShell>
+      <div className="w-full min-h-[calc(100vh-4rem)] bg-[#05070D] text-white selection:bg-[#3DE1A1]/30 relative overflow-x-hidden px-4 py-8">
+        <AiChatPanel
+          onAddToNotes={handleAddToNotes}
+          getContextData={() => {
+            const editorAny = editor as any;
+            return (
+              editorAny?.storage?.markdown?.getMarkdown?.() ||
+              editorAny?.getMarkdown?.() ||
+              note?.content ||
+              ""
+            );
+          }}
+        />
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => router.push("/dashboard")}
+              className="flex items-center gap-2 text-[#A0A8B8] hover:text-white hover:bg-white/5 transition-colors px-3 h-10 rounded-xl -ml-3 w-fit"
+            >
+              <ChevronLeft className="w-5 h-5" />
+              Back to Dashboard
             </Button>
-          </div>
-        </div>
 
-        <Card className="border-border shadow-sm">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-3xl font-bold">{note.title}</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <div className="mt-2 rounded-md border border-border bg-background">
-              <EditorContent editor={editor} />
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="rounded-md bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold shadow-[0_0_15px_rgba(61,225,161,0.2)] hover:shadow-[0_0_20px_rgba(61,225,161,0.4)] transition-all px-4 h-10 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin text-black" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          <Card className="border border-white/[0.08] bg-[#070A14] shadow-2xl rounded-xl overflow-hidden h-fit">
+            <CardHeader className="pb-4 pt-6 px-6 border-b border-white/[0.08] bg-white/[0.02]">
+              <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
+                {note.title || "Untitled Note"}
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="p-6">
+              <div className="rounded-md border border-white/[0.08] bg-[#070A14] min-h-[300px]">
+                <div className="prose prose-invert max-w-none p-4">
+                  <EditorContent
+                    editor={editor}
+                    className="min-h-[300px] outline-none"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </main>
+    </DashboardShell>
   );
 }

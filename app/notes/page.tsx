@@ -20,6 +20,8 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { DashboardShell } from "@/components/dashboard-shell";
+import { Loader2 } from "lucide-react";
 
 export default function NotesPage() {
   const router = useRouter();
@@ -35,6 +37,11 @@ export default function NotesPage() {
       }
     },
   });
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -104,10 +111,10 @@ export default function NotesPage() {
     }
   };
 
-  if (isPending) {
+  if (!isMounted || isPending) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+      <div className="min-h-screen w-full bg-[#05070D] flex items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-[#3DE1A1]" />
       </div>
     );
   }
@@ -117,69 +124,97 @@ export default function NotesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex justify-center px-4 py-10 relative">
-      <AiChatPanel
-        onAddToNotes={handleAddToNotes}
-        getContextData={() => content}
-      />
-      <Card className="w-full max-w-3xl shadow-sm flex flex-col gap-0 border-border">
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
-          <div className="flex flex-col gap-1.5">
-            <CardTitle className="text-2xl font-semibold">Notes</CardTitle>
-            <CardDescription className="text-sm">
-              Write and edit your notes below. When you&apos;re ready, click
-              Save.
-            </CardDescription>
-          </div>
+    <DashboardShell>
+      <div className="w-full min-h-[calc(100vh-4rem)] bg-[#05070D] text-white selection:bg-[#3DE1A1]/30 relative overflow-x-hidden flex justify-center px-4 py-8">
+        <AiChatPanel
+          onAddToNotes={handleAddToNotes}
+          getContextData={() => content}
+        />
+        <Card className="w-full max-w-4xl border border-white/[0.08] bg-[#070A14] flex flex-col gap-0 rounded-3xl overflow-hidden shadow-2xl h-fit">
+          <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-6 border-b border-white/[0.08] bg-white/[0.02] p-8">
+            <div className="flex flex-col gap-2">
+              <CardTitle className="text-3xl md:text-4xl font-bold tracking-tight text-white">
+                Create Note
+              </CardTitle>
+              <CardDescription className="text-base text-[#A0A8B8]">
+                Write and edit your notes below. When you&apos;re ready, click
+                Save.
+              </CardDescription>
+            </div>
 
-          <Tabs
-            value={viewType}
-            onValueChange={(v) => handleSwitch(v as "markdown" | "tiptap")}
-          >
-            <TabsList>
-              <TabsTrigger value="markdown">Markdown</TabsTrigger>
-              <TabsTrigger value="tiptap">Preview</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </CardHeader>
+            <Tabs
+              value={viewType}
+              onValueChange={(v) => handleSwitch(v as "markdown" | "tiptap")}
+              className="bg-black/30 p-1.5 rounded-xl border border-white/[0.05]"
+            >
+              <TabsList className="bg-transparent gap-2">
+                <TabsTrigger
+                  value="markdown"
+                  className="text-[#A0A8B8] data-[state=active]:bg-white/10 data-[state=active]:text-white data-active:bg-white/10 data-active:text-white rounded-md px-4 py-1.5 font-medium transition-all hover:text-white"
+                >
+                  Markdown
+                </TabsTrigger>
+                <TabsTrigger
+                  value="tiptap"
+                  className="text-[#A0A8B8] data-[state=active]:bg-white/10 data-[state=active]:text-white data-active:bg-white/10 data-active:text-white rounded-md px-4 py-1.5 font-medium transition-all hover:text-white"
+                >
+                  Preview
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </CardHeader>
 
-        <CardContent className="flex flex-col gap-4">
-          <Input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            className="text-lg font-medium bg-background"
-          />
+          <CardContent className="flex flex-col gap-4 p-6">
+            <Input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Note Title..."
+              className="text-lg font-medium bg-[#070A14] border-white/[0.08] text-white placeholder:text-[#A0A8B8] focus-visible:ring-1 focus-visible:ring-[#3DE1A1] h-10 rounded-md px-3"
+            />
 
-          <div className="rounded-md border border-border bg-background min-h-[300px]">
-            {viewType === "tiptap" ? (
-              <EditorContent editor={editor} className="min-h-[300px]" />
-            ) : (
-              <div className="flex flex-col h-full">
-                <textarea
-                  value={content}
-                  onChange={handleTextareaChange}
-                  className="w-full min-h-[300px] p-4 border-none rounded-md font-mono text-sm focus:outline-none focus:ring-0 bg-transparent resize-none flex-grow"
-                  placeholder="Type your markdown here..."
-                />
-                <div className="border-t border-border p-2 bg-muted/30 rounded-b-md flex justify-end">
-                  <Button
-                    variant="secondary"
-                    onClick={() => handleSwitch("tiptap")}
-                  >
-                    Render Markdown &uarr;
-                  </Button>
+            <div className="rounded-md border border-white/[0.08] bg-[#070A14] min-h-[300px] overflow-hidden flex flex-col">
+              {viewType === "tiptap" ? (
+                <div className="prose prose-invert max-w-none p-6 flex-grow">
+                  <EditorContent
+                    editor={editor}
+                    className="min-h-[300px] outline-none"
+                  />
                 </div>
-              </div>
-            )}
-          </div>
-        </CardContent>
+              ) : (
+                <div className="flex flex-col flex-grow">
+                  <textarea
+                    value={content}
+                    onChange={handleTextareaChange}
+                    className="w-full min-h-[300px] p-4 border-none font-mono text-sm leading-relaxed focus:outline-none focus:ring-0 bg-transparent resize-none flex-grow text-[#A0A8B8]"
+                    placeholder="# Welcome to your new note
+                    
+Start typing markdown here..."
+                  />
+                  <div className="border-t border-white/[0.08] p-2 bg-white/[0.02] flex justify-end">
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSwitch("tiptap")}
+                      className="text-[#3DE1A1] hover:bg-[#3DE1A1]/10 hover:text-[#7CFFB2] font-semibold tracking-wide h-9 px-3"
+                    >
+                      Render Preview &rarr;
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
 
-        <CardFooter className="flex justify-end pt-4 border-t border-border">
-          <Button onClick={handleSave}>Save notes</Button>
-        </CardFooter>
-      </Card>
-    </main>
+          <CardFooter className="flex justify-end p-4 pt-4 border-t border-white/[0.08] bg-white/[0.02]">
+            <Button
+              onClick={handleSave}
+              className="rounded-md bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold shadow-[0_0_15px_rgba(61,225,161,0.2)] hover:shadow-[0_0_20px_rgba(61,225,161,0.4)] transition-all px-4 h-10"
+            >
+              Save Note
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    </DashboardShell>
   );
 }

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSignOut } from "@/lib/sign-out";
 import { GroupsModal } from "@/components/groups-modal";
+
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: Layout },
   { label: "Notes", href: "/notes", icon: FileText },
@@ -26,8 +27,13 @@ const navItems = [
   { label: "Resources", href: "/resources", icon: BookMarked },
 ];
 
-export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+export function Sidebar({
+  collapsed,
+  setCollapsed,
+}: {
+  collapsed: boolean;
+  setCollapsed: (val: boolean) => void;
+}) {
   const pathname = usePathname();
   const signOut = useSignOut();
   const [showGroupsModal, setShowGroupsModal] = useState(false);
@@ -46,19 +52,19 @@ export function Sidebar() {
     <>
       <aside
         className={cn(
-          "fixed left-0 top-0 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300",
+          "fixed left-0 top-0 h-screen bg-[#070A14] border-r border-white/[0.08] transition-all duration-300 z-50",
           collapsed ? "w-20" : "w-64",
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-sidebar-border">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-white/[0.08]">
           {!collapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <BookMarked className="w-5 h-5 text-primary" />
+            <div className="flex items-center gap-3 truncate">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFFB2] to-[#3DE1A1] flex items-center justify-center shrink-0">
+                <div className="w-3 h-3 bg-[#05070D] rounded-full" />
               </div>
-              <span className="font-semibold text-sidebar-foreground text-sm">
-                StudyHub
+              <span className="font-bold text-white text-lg tracking-tight truncate">
+                Sync Space
               </span>
             </div>
           )}
@@ -66,7 +72,7 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8 hover:bg-sidebar-accent text-sidebar-foreground hover:text-sidebar-accent-foreground"
+            className="h-8 w-8 hover:bg-white/5 text-[#A0A8B8] hover:text-white shrink-0 mx-auto"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
@@ -78,27 +84,37 @@ export function Sidebar() {
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex flex-col gap-1 p-3">
+        <nav className="flex flex-col gap-2 p-3 mt-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
-              pathname === item.href || pathname.startsWith(item.href + "/");
+              item.label === "Groups"
+                ? showGroupsModal
+                : item.href !== "" &&
+                  (pathname === item.href ||
+                    pathname.startsWith(item.href + "/"));
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavigation(e, item)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200",
                   isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-sm"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
+                    ? "bg-white/5 text-[#3DE1A1] font-semibold shadow-sm border border-white/[0.05]"
+                    : "text-[#A0A8B8] hover:bg-white/[0.02] hover:text-white border border-transparent",
+                  collapsed && "justify-center px-0",
                 )}
                 title={collapsed ? item.label : ""}
               >
-                <Icon className="w-5 h-5 flex-shrink-0" />
+                <Icon
+                  className={cn(
+                    "w-5 h-5 flex-shrink-0",
+                    isActive ? "text-[#3DE1A1]" : "text-[#A0A8B8]",
+                  )}
+                />
                 {!collapsed && (
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <span className="text-sm truncate">{item.label}</span>
                 )}
               </Link>
             );
@@ -106,11 +122,11 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Actions */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-sidebar-border space-y-1">
+        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/[0.08] space-y-2 bg-[#070A14]">
           <Button
             variant="ghost"
             className={cn(
-              "w-full flex items-center h-auto gap-3 px-3 py-2.5 rounded-lg transition-smooth text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive justify-start",
+              "w-full flex items-center h-auto gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 text-[#A0A8B8] hover:bg-red-500/10 hover:text-red-400 justify-start border border-transparent hover:border-red-500/20",
               collapsed && "justify-center px-0",
             )}
             title={collapsed ? "Logout" : ""}
@@ -118,7 +134,9 @@ export function Sidebar() {
             onClick={signOut}
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
-            {!collapsed && <span className="text-sm font-medium">Logout</span>}
+            {!collapsed && (
+              <span className="text-sm font-semibold truncate">Logout</span>
+            )}
           </Button>
         </div>
       </aside>

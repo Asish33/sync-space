@@ -67,15 +67,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05070D] font-sans selection:bg-[#3DE1A1]/30 text-white flex flex-col items-center justify-center relative overflow-hidden py-12 px-4">
+    <div className="min-h-screen bg-[#05070D] selection:bg-[#3DE1A1]/30 text-white flex flex-col items-center justify-center relative overflow-hidden py-12 px-4">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#05070D] via-[#070A14] to-[#0B1020]" />
 
-<div className="fixed inset-0 z-0 pointer-events-none">
-
-<div className="absolute inset-0 bg-gradient-to-br from-[#05070D] via-[#070A14] to-[#0B1020]" />
-
-<div className="absolute inset-0 z-0">
-
-<div
+        <div className="absolute inset-0 z-0">
+          <div
             className="absolute inset-0 opacity-[0.05]"
             style={{
               backgroundImage:
@@ -84,7 +81,7 @@ export default function LoginPage() {
             }}
           />
 
-<motion.div
+          <motion.div
             initial={{ top: "-20%" }}
             animate={{ top: "120%" }}
             transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
@@ -102,7 +99,7 @@ export default function LoginPage() {
             className="absolute left-[560px] w-[1px] h-[200px] bg-gradient-to-b from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
           />
 
-<motion.div
+          <motion.div
             initial={{ left: "-20%" }}
             animate={{ left: "120%" }}
             transition={{
@@ -115,18 +112,17 @@ export default function LoginPage() {
           />
         </div>
 
-<motion.div
+        <motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -bottom-[30%] -right-[10%] w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full bg-[#4F8CFF]/10 blur-[120px]"
         />
 
-<div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent blur-[2px]" />
+        <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent blur-[2px]" />
       </div>
 
       <div className="relative z-10 w-full max-w-md">
-
-<div className="mb-10 text-center">
+        <div className="mb-10 text-center">
           <Link href="/">
             <div className="inline-flex items-center justify-center gap-3 mb-8 p-3 px-5 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md hover:bg-white/[0.05] transition-all cursor-pointer">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFFB2] to-[#3DE1A1] flex items-center justify-center">
@@ -145,14 +141,13 @@ export default function LoginPage() {
           </p>
         </div>
 
-<motion.div
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="relative p-8 md:p-10 rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl shadow-2xl overflow-hidden group"
         >
-
-<div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-[#3DE1A1]/0 rounded-full blur-[80px] pointer-events-none group-hover:bg-[#3DE1A1]/10 transition-colors duration-500" />
+          <div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-[#3DE1A1]/0 rounded-full blur-[80px] pointer-events-none group-hover:bg-[#3DE1A1]/10 transition-colors duration-500" />
 
           <form onSubmit={handleLogin} className="w-full space-y-6">
             <div className="space-y-3">
@@ -227,7 +222,7 @@ export default function LoginPage() {
           </div>
         </motion.div>
 
-<p className="mt-8 text-sm text-[#A0A8B8]/70 text-center font-medium">
+        <p className="mt-8 text-sm text-[#A0A8B8]/70 text-center font-medium">
           Enterprise-grade security. Your data is always protected.
         </p>
       </div>
