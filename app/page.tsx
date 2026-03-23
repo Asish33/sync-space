@@ -26,6 +26,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import BackgroundEffects from "@/components/landing/BackgroundEffects";
+import Navbar from "@/components/landing/Navbar";
+import Hero from "@/components/landing/Hero";
 
 // Animation variants
 const fadeInUp = {
@@ -463,114 +466,14 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden">
-      {/* Gradient background elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-primary/3 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-primary/5 via-transparent to-accent/5 rounded-full blur-3xl" />
-      </div>
+      {/* Background effects (radials + blobs) */}
+      <BackgroundEffects />
 
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 h-16 border-b border-border/40 bg-background/80 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 z-50"
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-glow-sm">
-            <BookOpen className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <span className="font-semibold text-lg text-foreground">
-            StudyTogether
-          </span>
-        </div>
-        <div className="flex items-center gap-2 md:gap-3">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={toggleTheme}
-            className="rounded-lg"
-          >
-            {isDark ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
-          </Button>
-          <Link href="/login">
-            <Button
-              variant="ghost"
-              className="text-foreground hover:bg-secondary/50 rounded-lg hidden md:inline-flex"
-            >
-              Sign In
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button className="rounded-lg bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg transition-all">
-              Get Started
-            </Button>
-          </Link>
-        </div>
-      </motion.nav>
+      {/* Modular Navbar */}
+      <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
-      {/* Hero Section */}
-      <section className="relative pt-28 md:pt-36 pb-16 md:pb-24 px-4">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-            className="space-y-6"
-          >
-            <motion.div variants={fadeInUp} className="mb-6">
-              <Badge
-                variant="outline"
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border-primary/20 text-sm text-primary font-medium hover:bg-primary/20"
-              >
-                <Sparkles className="w-4 h-4" />
-                Powered by AI
-              </Badge>
-            </motion.div>
-
-            <motion.h1
-              variants={fadeInUp}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-[1.1] tracking-tight"
-            >
-              Study better.{" "}
-              <span className="bg-gradient-to-r from-primary via-accent to-primary/70 bg-clip-text text-transparent">
-                Together.
-              </span>
-            </motion.h1>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
-            >
-              Create focused study groups, collaborate live on notes, schedule
-              sessions, and use AI to learn faster — together.
-            </motion.p>
-
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4"
-            >
-              <Link href="/register">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto rounded-xl gap-2 bg-gradient-to-r from-primary to-primary/80 hover:shadow-xl transition-all text-base px-8 h-12"
-                >
-                  Continue
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Hero UI Mock */}
-          <HeroUIMock />
-        </div>
-      </section>
+      {/* Hero (modular) */}
+      <Hero />
 
       {/* Problem → Solution Section */}
       <AnimatedSection className="py-20 md:py-32 px-4">
