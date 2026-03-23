@@ -4,64 +4,111 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import {
+  ChevronDown,
+  ArrowRight,
+  MessageSquare,
+  FileText,
+  Calendar,
+  Sparkles,
+  Zap,
+  Check,
+} from "lucide-react";
 
-export default function SparkedLandingPage() {
+export default function SyncSpaceLandingPage() {
   return (
     <div className="min-h-screen bg-[#05070D] selection:bg-[#3DE1A1]/30 text-white overflow-hidden relative">
-      {/* Background Effects */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        {/* Deep background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#05070D] via-[#070A14] to-[#0B1020]" />
 
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+<div className="fixed inset-0 z-0 pointer-events-none">
 
-        {/* Blurred gradient sphere (bottom-right) */}
-        <motion.div
+<div className="absolute inset-0 bg-gradient-to-br from-[#05070D] via-[#070A14] to-[#0B1020]" />
+
+<div className="absolute inset-0 z-0">
+
+<div
+            className="absolute inset-0 opacity-[0.05]"
+            style={{
+              backgroundImage:
+                "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+
+<motion.div
+            initial={{ top: "-20%" }}
+            animate={{ top: "120%" }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            className="absolute left-[200px] w-[1px] h-[150px] bg-gradient-to-b from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
+          />
+          <motion.div
+            initial={{ top: "-20%" }}
+            animate={{ top: "120%" }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 1,
+            }}
+            className="absolute left-[560px] w-[1px] h-[200px] bg-gradient-to-b from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
+          />
+          <motion.div
+            initial={{ top: "-20%" }}
+            animate={{ top: "120%" }}
+            transition={{
+              duration: 3.5,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 2.5,
+            }}
+            className="absolute right-[320px] w-[1px] h-[120px] bg-gradient-to-b from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
+          />
+
+<motion.div
+            initial={{ left: "-20%" }}
+            animate={{ left: "120%" }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 0.5,
+            }}
+            className="absolute top-[280px] h-[1px] w-[250px] bg-gradient-to-r from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
+          />
+          <motion.div
+            initial={{ right: "-20%" }}
+            animate={{ right: "120%" }}
+            transition={{
+              duration: 5.5,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 3,
+            }}
+            className="absolute top-[640px] h-[1px] w-[200px] bg-gradient-to-l from-transparent via-[#3DE1A1]/15 to-transparent drop-shadow-[0_0_2px_rgba(61,225,161,0.15)]"
+          />
+        </div>
+
+<motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -bottom-[30%] -right-[10%] w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full bg-[#4F8CFF]/10 blur-[120px]"
         />
 
-        {/* Planet/curve shape (top-left) */}
-        <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent blur-[2px]" />
-
-        {/* Light streak */}
-        <motion.div
-          animate={{ x: [-1000, 1000], opacity: [0, 1, 0] }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 2,
-          }}
-          className="absolute top-[20%] left-0 w-[500px] h-[1px] bg-gradient-to-r from-transparent via-[#7CFFB2]/50 to-transparent rotate-12"
-        />
+<div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent blur-[2px]" />
       </div>
 
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#05070D]/40 backdrop-blur-md border-b border-white/5">
+<nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#05070D]/40 backdrop-blur-md border-b border-white/5">
         <div className="flex items-center gap-12">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+
+<Link href="/" className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFFB2] to-[#3DE1A1] flex items-center justify-center">
               <div className="w-3 h-3 bg-[#05070D] rounded-full" />
             </div>
-            <span className="font-bold text-lg tracking-tight">Sparked</span>
+            <span className="font-bold text-lg tracking-tight">Sync Space</span>
           </Link>
 
-          {/* Links */}
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#A0A8B8]">
+<div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#A0A8B8]">
             <Link href="#" className="hover:text-white transition-colors">
-              Why Sparked
+              Why Sync Space
             </Link>
             <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors group">
               Products{" "}
@@ -79,80 +126,52 @@ export default function SparkedLandingPage() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <Button
-            variant="ghost"
-            className="text-[#A0A8B8] hover:text-white hover:bg-white/5 rounded-xl font-medium"
-          >
-            Log in
-          </Button>
-          <Button className="bg-white text-black hover:bg-gray-200 rounded-xl font-semibold px-6">
-            Join now
-          </Button>
+          <Link href="/login">
+            <Button
+              variant="ghost"
+              className="text-[#A0A8B8] hover:text-white hover:bg-white/5 rounded-xl font-medium"
+            >
+              Log in
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button className="bg-white text-black hover:bg-gray-200 rounded-xl font-semibold px-6">
+              Join now
+            </Button>
+          </Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="relative z-10 pt-32 md:pt-48 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-start min-h-screen">
+<main className="relative z-10 pt-32 md:pt-48 pb-20 px-6 max-w-7xl mx-auto flex flex-col items-start min-h-screen">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-4xl"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 backdrop-blur-md">
-            <span className="text-sm">🚀</span>
+
+<div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 backdrop-blur-md">
             <span className="text-sm font-medium text-[#A0A8B8]">
               Brand new release: v1.2 Professional
             </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold tracking-tight leading-[1.1] mb-6">
-            Powerful version{" "}
+<h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold tracking-tight leading-[1.1] mb-6">
+            Study{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1]">
-              control
+              Smarter Together
             </span>
             , <br className="hidden md:block" />
-            seamless{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1]">
-              collaboration
-            </span>
+            in Real Time
           </h1>
 
-          {/* Subtext */}
-          <p className="text-lg md:text-xl text-[#A0A8B8] font-medium max-w-2xl mb-10 leading-relaxed">
-            Sparked is an innovative platform designed to revolutionize
-            collaborative software development and empower teams to achieve
-            their goals with unmatched efficiency. Built with developers in
-            mind.
+<p className="text-lg md:text-xl text-[#A0A8B8] font-medium max-w-2xl mb-10 leading-relaxed">
+            Seamless group collaboration, live notes, AI assistance, and video
+            sessions — all in one place.
           </p>
-
-          {/* CTA Row */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-2xl w-full">
-            <Button className="w-full sm:w-auto h-14 px-8 rounded-xl bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold text-lg hover:scale-[1.03] transition-all shadow-[0_0_20px_rgba(124,255,178,0.3)] hover:shadow-[0_0_30px_rgba(124,255,178,0.5)]">
-              Start Trial
-            </Button>
-
-            <div className="relative flex-1 w-full sm:w-auto h-14 group">
-              <Input
-                type="email"
-                placeholder="your email"
-                className="h-full w-full rounded-xl bg-white/[0.03] border-white/[0.08] text-white placeholder:text-[#A0A8B8] focus-visible:ring-1 focus-visible:ring-[#7CFFB2] focus-visible:border-[#7CFFB2] backdrop-blur-md px-6 text-base transition-all group-focus-within:shadow-[0_0_15px_rgba(124,255,178,0.1)]"
-              />
-            </div>
-
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto h-14 px-8 rounded-xl bg-transparent border-white/[0.08] hover:bg-white/[0.05] text-white font-semibold text-lg backdrop-blur-md"
-            >
-              Subscribe
-            </Button>
-          </div>
         </motion.div>
 
-        {/* Trust Strip */}
-        <motion.div
+<motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -162,8 +181,8 @@ export default function SparkedLandingPage() {
             Trusted by the world's leading engineering teams
           </p>
           <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-            {/* Logos - SVG paths for recognized brands */}
-            <div className="flex items-center gap-2 font-bold text-xl">
+
+<div className="flex items-center gap-2 font-bold text-xl">
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -224,6 +243,193 @@ export default function SparkedLandingPage() {
           </div>
         </motion.div>
       </main>
+
+<section className="relative z-10 py-24 px-6 max-w-7xl mx-auto border-t border-white/[0.05]">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+            Everything you need to{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1]">
+              succeed
+            </span>
+          </h2>
+          <p className="text-[#A0A8B8] text-lg max-w-2xl mx-auto">
+            A comprehensive suite of tools built for modern study groups and
+            developers.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="group p-8 rounded-2xl bg-white/[0.02] border border-white/[0.08] backdrop-blur-md hover:bg-white/[0.04] transition-all hover:border-[#3DE1A1]/30 hover:shadow-[0_0_30px_rgba(61,225,161,0.1)]"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7CFFB2]/10 to-[#3DE1A1]/5 flex items-center justify-center mb-6 group-hover:from-[#7CFFB2]/20 group-hover:to-[#3DE1A1]/10 transition-all border border-[#3DE1A1]/20">
+                <feature.icon className="w-6 h-6 text-[#3DE1A1]" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-[#A0A8B8] leading-relaxed">
+                {feature.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+<section className="relative z-10 py-24 px-6 max-w-5xl mx-auto border-t border-white/[0.05]">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+            Loved by focused{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1]">
+              Students
+            </span>
+          </h2>
+          <p className="text-[#A0A8B8] text-lg max-w-2xl mx-auto">
+            See what others are saying about their experience with Sync Space.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {testimonials.map((testimonial, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.2 }}
+              className="relative p-8 rounded-2xl bg-white/[0.02] border border-white/[0.08] backdrop-blur-md hover:bg-white/[0.04] transition-all"
+            >
+              <div className="absolute top-4 left-6 text-7xl text-[#3DE1A1]/10 font-serif font-bold pointer-events-none">
+                "
+              </div>
+              <p className="text-white text-lg leading-relaxed mb-8 relative z-10">
+                "{testimonial.quote}"
+              </p>
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7CFFB2]/20 to-[#3DE1A1]/10 border border-[#3DE1A1]/20 flex items-center justify-center text-[#3DE1A1] font-bold text-xl">
+                  {testimonial.author.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="text-white font-bold">{testimonial.author}</h4>
+                  <p className="text-[#A0A8B8] text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+<section className="relative z-10 py-32 px-6 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="relative p-8 md:p-12 rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-md text-center overflow-hidden">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+              Start your next study session today.
+            </h2>
+            <p className="text-lg text-[#A0A8B8] mb-8 max-w-xl mx-auto">
+              Free to start. No pressure. No credit card.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10 relative z-10">
+              <Link href="/dashboard">
+                <Button className="w-full sm:w-auto rounded-xl gap-2 bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold shadow-[0_0_20px_rgba(124,255,178,0.3)] hover:shadow-[0_0_30px_rgba(124,255,178,0.5)] transition-all text-base px-10 h-14">
+                  Continue
+                  <ArrowRight className="w-5 h-5 text-black" />
+                </Button>
+              </Link>
+            </div>
+
+<div className="flex flex-wrap items-center justify-center gap-8 text-sm text-[#A0A8B8] relative z-10 font-medium">
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#3DE1A1]" />
+                Free forever plan
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#3DE1A1]" />
+                No spam
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-[#3DE1A1]" />
+                Instant access
+              </div>
+            </div>
+
+<div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#7CFFB2]/10 rounded-full blur-[80px] pointer-events-none" />
+          </div>
+        </motion.div>
+      </section>
+
+<footer className="relative z-10 border-t border-white/[0.05] py-12 px-6 text-center backdrop-blur-md bg-[#05070D]/60 mt-auto">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CFFB2] to-[#3DE1A1] flex items-center justify-center">
+            <div className="w-3 h-3 bg-[#05070D] rounded-full" />
+          </div>
+          <span className="font-bold text-lg text-white tracking-tight">
+            Sync Space
+          </span>
+        </div>
+        <p className="text-sm text-[#A0A8B8] font-medium">
+          © 2026 Sync Space. Crafted with care for students who want to learn
+          together.
+        </p>
+      </footer>
     </div>
   );
 }
+
+const features = [
+  {
+    icon: MessageSquare,
+    title: "Real-Time Group Chat",
+    description:
+      "Focused discussions without distractions. Stay connected with your study group.",
+  },
+  {
+    icon: FileText,
+    title: "Collaborative Notes",
+    description:
+      "Edit together. See live cursors. Stay aligned on every concept.",
+  },
+  {
+    icon: Calendar,
+    title: "Study Session Scheduling",
+    description:
+      "Plan sessions. Get reminders. Stay accountable to your goals.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI Study Assistant",
+    description:
+      "Summaries, explanations, and smart study help when you need it.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Group Creation",
+    description: "Create or join a group in seconds. Zero setup friction.",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "This is the first time group study actually worked for me. The real-time collaboration changed everything.",
+    author: "Priya S.",
+    role: "CS Student, IIT Delhi",
+  },
+  {
+    quote:
+      "The AI summaries save me hours every week. It's like having a study partner who never sleeps.",
+    author: "Rahul M.",
+    role: "CAT Aspirant",
+  },
+];

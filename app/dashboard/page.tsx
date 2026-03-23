@@ -255,8 +255,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Activity Chart Section */}
-        <Card className="p-6 shadow-sm bg-card border-border">
+<Card className="p-6 shadow-sm bg-card border-border">
           <CardHeader className="px-0 pt-0">
             <CardTitle className="text-lg font-bold">Activity Trends</CardTitle>
           </CardHeader>
