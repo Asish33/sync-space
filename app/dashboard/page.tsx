@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { User } from "@/lib/user";
 import { useSignOut } from "@/lib/sign-out";
 import {
@@ -22,7 +22,18 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, Code, Loader2 } from "lucide-react";
 
 export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen w-full bg-[#05070D]" />}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+function DashboardContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get("q")?.toLowerCase() || "";
+
   const { session, isPending } = User();
   const signOut = useSignOut();
   const [notes, setNotes] = useState<any[]>([]);
@@ -126,6 +137,17 @@ export default function DashboardPage() {
     return { day: dayName, notes: notesCount, codes: codesCount };
   });
 
+  const filteredNotes = notes.filter(
+    (note) => !searchQuery || note.title?.toLowerCase().includes(searchQuery),
+  );
+
+  const filteredCodes = codes.filter(
+    (code) =>
+      !searchQuery ||
+      code.title?.toLowerCase().includes(searchQuery) ||
+      code.language?.toLowerCase().includes(searchQuery),
+  );
+
   return (
     <div className="w-full min-h-screen bg-[#05070D] text-white selection:bg-[#3DE1A1]/30 relative overflow-x-hidden">
       <main className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -154,10 +176,10 @@ export default function DashboardPage() {
               ></div>
             ))}
           </div>
-        ) : notes.length > 0 ? (
+        ) : filteredNotes.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {notes.slice(0, visibleNotes).map((note) => (
+              {filteredNotes.slice(0, visibleNotes).map((note) => (
                 <Card
                   key={note.id}
                   onClick={() => handleNoteClick(note.id)}
@@ -176,7 +198,7 @@ export default function DashboardPage() {
                 </Card>
               ))}
             </div>
-            {notes.length > visibleNotes && (
+            {filteredNotes.length > visibleNotes && (
               <div className="flex justify-center mb-16">
                 <Button
                   variant="outline"
@@ -187,16 +209,20 @@ export default function DashboardPage() {
                 </Button>
               </div>
             )}
-            {notes.length <= visibleNotes && <div className="mb-16" />}
+            {filteredNotes.length <= visibleNotes && <div className="mb-16" />}
           </>
         ) : (
           <div className="text-center py-20 bg-[#070A14] rounded-3xl border border-dashed border-white/10 mb-16">
             <div className="h-16 w-16 bg-white/[0.05] border border-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <FileText className="w-8 h-8 text-[#3DE1A1]" />
             </div>
-            <h3 className="text-xl font-semibold text-white">No notes yet</h3>
+            <h3 className="text-xl font-semibold text-white">
+              {searchQuery ? "No matching notes found" : "No notes yet"}
+            </h3>
             <p className="mt-2 text-[#A0A8B8]">
-              Create your first collaborative note to get started.
+              {searchQuery
+                ? "Try refining your search query."
+                : "Create your first collaborative note to get started."}
             </p>
           </div>
         )}
@@ -217,10 +243,10 @@ export default function DashboardPage() {
               ></div>
             ))}
           </div>
-        ) : codes.length > 0 ? (
+        ) : filteredCodes.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {codes.slice(0, visibleCodes).map((code) => (
+              {filteredCodes.slice(0, visibleCodes).map((code) => (
                 <Card
                   key={code.id}
                   onClick={() => handleCodeClick(code.id)}
@@ -248,7 +274,7 @@ export default function DashboardPage() {
                 </Card>
               ))}
             </div>
-            {codes.length > visibleCodes && (
+            {filteredCodes.length > visibleCodes && (
               <div className="flex justify-center mb-16">
                 <Button
                   variant="outline"
@@ -259,7 +285,7 @@ export default function DashboardPage() {
                 </Button>
               </div>
             )}
-            {codes.length <= visibleCodes && <div className="mb-16" />}
+            {filteredCodes.length <= visibleCodes && <div className="mb-16" />}
           </>
         ) : (
           <div className="text-center py-20 bg-[#070A14] rounded-3xl border border-dashed border-white/10 mb-16">
@@ -267,10 +293,14 @@ export default function DashboardPage() {
               <Code className="w-8 h-8 text-[#4F8CFF]" />
             </div>
             <h3 className="text-xl font-semibold text-white">
-              No code snippets yet
+              {searchQuery
+                ? "No matching code snippets found"
+                : "No code snippets yet"}
             </h3>
             <p className="mt-2 text-[#A0A8B8]">
-              Create your first live codebase snapshot.
+              {searchQuery
+                ? "Try refining your search query."
+                : "Create your first live codebase snapshot."}
             </p>
           </div>
         )}

@@ -13,13 +13,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useSignOut } from "@/lib/sign-out";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function Navbar({ collapsed }: { collapsed?: boolean }) {
   const signOut = useSignOut();
   const { session } = User();
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const isNotesPage = pathname?.startsWith("/notes");
+
+  const [inputValue, setInputValue] = React.useState(
+    searchParams?.get("q") || "",
+  );
+
+  React.useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      // Only push if the value actually changed from the current URL to prevent infinite loops
+      const currentQ = searchParams?.get("q") || "";
+      if (inputValue !== currentQ) {
+        if (inputValue) {
+          router.push(`/dashboard?q=${encodeURIComponent(inputValue)}`);
+        } else {
+          router.push(`/dashboard`);
+        }
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [inputValue, router, searchParams]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
 
   const name = session?.user?.name || "";
   const initials =
@@ -47,7 +73,9 @@ export function Navbar({ collapsed }: { collapsed?: boolean }) {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A0A8B8] pointer-events-none" />
               <Input
                 type="text"
-                placeholder="Search notes, groups..."
+                placeholder="Search notes, codebase..."
+                value={inputValue}
+                onChange={handleSearchChange}
                 className="w-full pl-9 bg-white/[0.03] border border-white/[0.08] text-white placeholder:text-[#A0A8B8]/50 focus-visible:ring-1 focus-visible:ring-[#3DE1A1]"
               />
             </div>
@@ -71,7 +99,9 @@ export function Navbar({ collapsed }: { collapsed?: boolean }) {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A0A8B8] pointer-events-none" />
             <Input
               type="text"
-              placeholder="Search notes, groups..."
+              placeholder="Search notes, codebase..."
+              value={inputValue}
+              onChange={handleSearchChange}
               className="w-full pl-9 bg-white/[0.03] border border-white/[0.08] text-white placeholder:text-[#A0A8B8]/50 focus-visible:ring-1 focus-visible:ring-[#3DE1A1]"
             />
           </div>
