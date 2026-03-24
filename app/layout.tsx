@@ -2,13 +2,15 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "StudyHub - Online Study Groups",
-  description: "Collaborate with peers, manage notes, and study together",
+  title: "SyncSpace - Study Together",
+  description:
+    "Your unified digital workspace. Collaborate, code, and map your notes in the SyncSpace.",
   icons: {
     icon: [
       {
@@ -37,6 +39,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.className} antialiased`}>
         {children}
+        <Toaster theme="dark" position="bottom-right" />
         <Analytics />
       </body>
     </html>

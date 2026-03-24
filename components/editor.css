@@ -1,5 +1,6 @@
-
 .ProseMirror {
+  color: #f8fafc;
+
   > * + * {
     margin-top: 0.75em;
   }
@@ -20,14 +21,16 @@
   }
 
   code {
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
+    background-color: rgba(61, 225, 161, 0.1);
+    color: #3de1a1;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
   }
 
   pre {
-    background: #0D0D0D;
-    color: #FFF;
-    font-family: 'JetBrainsMono', monospace;
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -38,17 +41,17 @@
       font-size: 0.8rem;
     }
   }
-  
+
   h1 {
     font-size: 1.5rem;
     font-weight: 700;
   }
-  
+
   h2 {
     font-size: 1.25rem;
     font-weight: 600;
   }
-  
+
   h3 {
     font-size: 1.1rem;
     font-weight: 600;
@@ -61,21 +64,22 @@
 
   blockquote {
     padding-left: 1rem;
-    border-left: 2px solid rgba(#0D0D0D, 0.1);
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    color: #a0a8b8;
   }
 
   hr {
     border: none;
-    border-top: 2px solid rgba(#0D0D0D, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 2rem 0;
   }
-  
+
   a {
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
+    color: #7cffb2;
+    text-decoration: underline;
+    cursor: pointer;
   }
-  
+
   ul[data-type="taskList"] {
     list-style: none;
     padding: 0;
@@ -99,12 +103,19 @@
 
 /* Remote cursor animation */
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .remote-cursor {
-  transition: top 0.15s ease-out, left 0.15s ease-out;
+  transition:
+    top 0.15s ease-out,
+    left 0.15s ease-out;
 }
 
 .remote-cursor-caret {

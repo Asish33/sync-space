@@ -10,7 +10,6 @@ import "@/components/editor.css";
 import { useNoteEditor } from "@/hooks/use-note-editor";
 import AiChatPanel from "@/components/ai-chat-panel";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard-shell";
 
@@ -161,7 +160,7 @@ export default function NotePage() {
 
   return (
     <DashboardShell>
-      <div className="w-full min-h-[calc(100vh-4rem)] bg-[#05070D] text-white selection:bg-[#3DE1A1]/30 relative overflow-x-hidden px-4 py-8">
+      <div className="w-full min-h-screen bg-[#05070D] text-white selection:bg-[#3DE1A1]/30 relative overflow-x-hidden">
         <AiChatPanel
           onAddToNotes={handleAddToNotes}
           getContextData={() => {
@@ -174,7 +173,7 @@ export default function NotePage() {
             );
           }}
         />
-        <div className="max-w-5xl mx-auto">
+        <main className="relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <Button
               variant="ghost"
@@ -189,7 +188,7 @@ export default function NotePage() {
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="rounded-md bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold shadow-[0_0_15px_rgba(61,225,161,0.2)] hover:shadow-[0_0_20px_rgba(61,225,161,0.4)] transition-all px-4 h-10 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-md bg-gradient-to-r from-[#7CFFB2] to-[#3DE1A1] hover:from-[#6be6a0] hover:to-[#31c98e] text-black font-semibold shadow-[0_0_15px_rgba(61,225,161,0.2)] hover:shadow-[0_0_20px_rgba(61,225,161,0.4)] transition-all px-6 h-10 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? (
                   <>
@@ -203,25 +202,21 @@ export default function NotePage() {
             </div>
           </div>
 
-          <Card className="border border-white/[0.08] bg-[#070A14] shadow-2xl rounded-xl overflow-hidden h-fit">
-            <CardHeader className="pb-4 pt-6 px-6 border-b border-white/[0.08] bg-white/[0.02]">
-              <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
-                {note.title || "Untitled Note"}
-              </CardTitle>
-            </CardHeader>
+          <div className="mb-6">
+            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+              {note.title || "Untitled Note"}
+            </h1>
+          </div>
 
-            <CardContent className="p-6">
-              <div className="rounded-md border border-white/[0.08] bg-[#070A14] min-h-[300px]">
-                <div className="prose prose-invert max-w-none p-4">
-                  <EditorContent
-                    editor={editor}
-                    className="min-h-[300px] outline-none"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <div className="rounded-xl border border-white/[0.08] bg-[#070A14] min-h-[500px] shadow-xl">
+            <div className="prose prose-invert max-w-none p-6 md:p-10">
+              <EditorContent
+                editor={editor}
+                className="min-h-[500px] outline-none"
+              />
+            </div>
+          </div>
+        </main>
       </div>
     </DashboardShell>
   );
