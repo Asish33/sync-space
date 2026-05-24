@@ -9,11 +9,11 @@ import ProductPreview from "./ProductPreview";
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+} as const;
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.12 } },
-};
+} as const;
 
 export default function HeroSection() {
   return (

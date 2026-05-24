@@ -125,7 +125,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
+    background-color: #000000 !important;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
@@ -144,6 +145,8 @@
   }
   html {
     @apply font-sans;
+    background-color: #000000 !important;
+    color-scheme: dark;
   }
 }
 

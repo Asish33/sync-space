@@ -10,11 +10,11 @@ const scaleIn = {
     scale: 1,
     transition: { duration: 0.5, ease: "easeOut" },
   },
-};
+} as const;
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.15 } },
-};
+} as const;
 
 const testimonials = [
   {

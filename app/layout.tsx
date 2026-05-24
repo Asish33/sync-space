@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${outfit.className} antialiased`}>
+    <html lang="en" className="dark">
+      <body className={`${outfit.className} antialiased bg-black text-white`}>
         {children}
         <Toaster theme="dark" position="bottom-right" />
         <Analytics />

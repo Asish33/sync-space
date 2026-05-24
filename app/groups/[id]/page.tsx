@@ -355,21 +355,24 @@ export default function GroupPage({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Card className="p-4 min-h-[500px] shadow-sm flex flex-col">
+          <Card className="p-4 min-h-[500px] shadow-sm flex flex-col justify-stretch">
             {session?.user ? (
-              editorMode === "notes" ? (
-                <CollaborativeEditor
-                  roomId={groupId}
-                  username={session.user.name || "Anonymous"}
-                />
-              ) : (
-                <CollaborativeCodeEditor
-                  roomId={groupId}
-                  username={session.user.name || "Anonymous"}
-                />
-              )
+              <>
+                <div className={editorMode === "notes" ? "flex flex-col flex-1" : "hidden"}>
+                  <CollaborativeEditor
+                    roomId={groupId}
+                    username={session.user.name || "Anonymous"}
+                  />
+                </div>
+                <div className={editorMode === "code" ? "flex flex-col flex-1" : "hidden"}>
+                  <CollaborativeCodeEditor
+                    roomId={groupId}
+                    username={session.user.name || "Anonymous"}
+                  />
+                </div>
+              </>
             ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
+              <div className="flex items-center justify-center h-full text-muted-foreground flex-1">
                 Loading...
               </div>
             )}

@@ -6,11 +6,11 @@ import { useRef } from "react";
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+} as const;
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.15 } },
-};
+} as const;
 
 const steps = [
   {

@@ -119,6 +119,5 @@
 }
 
 .remote-cursor-caret {
-  animation: cursor-blink 1s step-end infinite;
   border-radius: 1px;
 }

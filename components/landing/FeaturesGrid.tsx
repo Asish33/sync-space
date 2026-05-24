@@ -1,37 +1,5 @@
 "use client";
 
-import FeatureCard from "./FeatureCard";
-
-export default function FeaturesGrid({ features }: { features: any[] }) {
-  return (
-    <section className="py-20 md:py-28 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Everything serious students need.
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Tools designed for focused learning, not endless scrolling.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f, i) => (
-            <FeatureCard
-              key={i}
-              icon={f.icon}
-              title={f.title}
-              description={f.description}
-              index={i}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-("use client");
-
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { MessageSquare, FileText, Calendar, Sparkles, Zap } from "lucide-react";
@@ -39,11 +7,11 @@ import { MessageSquare, FileText, Calendar, Sparkles, Zap } from "lucide-react";
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+} as const;
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.1 } },
-};
+} as const;
 
 const features = [
   {

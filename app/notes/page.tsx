@@ -183,10 +183,10 @@ export default function NotesPage() {
 
             <div className="rounded-xl border border-white/[0.08] bg-[#070A14] min-h-[500px] overflow-hidden flex flex-col shadow-xl">
               {viewType === "tiptap" ? (
-                <div className="prose prose-invert max-w-none p-6 md:p-10 flex-grow">
+                <div className="prose max-w-none p-6 md:p-10 flex-grow text-black">
                   <EditorContent
                     editor={editor}
-                    className="min-h-[500px] outline-none"
+                    className="min-h-[500px] outline-none text-black"
                   />
                 </div>
               ) : (

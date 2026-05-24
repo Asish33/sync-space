@@ -252,7 +252,6 @@ function TiptapEditor({ provider, ydoc, username }: TiptapEditorProps) {
                 width: "2px",
                 height: "1.2em",
                 backgroundColor: cursor.color,
-                animation: "cursor-blink 1s step-end infinite",
               }}
             />
             {/* Name label */}

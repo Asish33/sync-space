@@ -15,15 +15,31 @@
   overflow: hidden;
 }
 
-.code-remote-cursor {
-  transition:
-    top 0.15s ease-out,
-    left 0.15s ease-out;
+.yRemoteSelection {
+  transition: background-color 0.2s ease-in-out;
 }
 
-.code-remote-cursor-caret {
-  animation: code-cursor-blink 1s step-end infinite;
-  border-radius: 1px;
+.yRemoteSelectionHead {
+  position: absolute;
+  width: 2px !important;
+  height: 100%;
+}
+
+/* User name label overlay */
+.yRemoteSelectionHead::after {
+  position: absolute;
+  top: -1.4em;
+  left: 0;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  line-height: 1.2;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 100;
 }
 
 /* Language selector styling */

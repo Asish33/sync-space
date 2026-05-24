@@ -72,16 +72,23 @@ export function CollaborativeCodeEditor({
       color: getColorForName(username),
     });
 
-    wsProvider.on("status", (event: { status: string }) => {
-      if (event.status === "connected") {
+    const handleSync = (isSynced: boolean) => {
+      if (isSynced) {
         setIsReady(true);
       }
-    });
+    };
+
+    wsProvider.on("sync", handleSync);
+    
+    if (wsProvider.synced) {
+      setIsReady(true);
+    }
 
     setYdoc(doc);
     setProvider(wsProvider);
 
     return () => {
+      wsProvider.off("sync", handleSync);
       wsProvider.destroy();
       doc.destroy();
     };
@@ -126,13 +133,11 @@ function MonacoEditorInner({
 }: MonacoEditorInnerProps) {
   const [language, setLanguage] = useState(initialLanguage);
   const [theme, setTheme] = useState<"vs-dark" | "light">("vs-dark");
-  const [cursors, setCursors] = useState<CursorInfo[]>([]);
   const [output, setOutput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const bindingRef = useRef<MonacoBinding | null>(null);
-  const rafRef = useRef<number>(0);
   const hasSetInitialContent = useRef(false);
 
   const handleEditorMount: OnMount = useCallback(
@@ -156,90 +161,55 @@ function MonacoEditorInner({
         ytext.insert(0, STARTER_CODE[initialLanguage] || "");
         hasSetInitialContent.current = true;
       }
-
-      // Broadcast cursor position via awareness
-      editor.onDidChangeCursorPosition(() => {
-        const position = editor.getPosition();
-        if (position) {
-          provider.awareness.setLocalStateField("cursor", {
-            lineNumber: position.lineNumber,
-            column: position.column,
-          });
-        }
-      });
-
-      editor.onDidBlurEditorText(() => {
-        provider.awareness.setLocalStateField("cursor", null);
-      });
     },
     [ydoc, provider, initialLanguage],
   );
 
-  // Compute remote cursor pixel positions
-  const computeCursorPositions = useCallback(() => {
-    if (!editorRef.current || !containerRef.current) return;
-
-    const states = provider.awareness.getStates();
-    const localId = provider.awareness.clientID;
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const newCursors: CursorInfo[] = [];
-
-    states.forEach((state: any, clientId: number) => {
-      if (clientId === localId) return;
-      if (!state.user || !state.cursor) return;
-
-      try {
-        const editor = editorRef.current!;
-        const pos = {
-          lineNumber: state.cursor.lineNumber,
-          column: state.cursor.column,
-        };
-
-        const top = editor.getTopForLineNumber(pos.lineNumber);
-        const scrollTop = editor.getScrollTop();
-        const contentLeft = editor.getLayoutInfo().contentLeft;
-        const charWidth = 7.8;
-        const left = contentLeft + (pos.column - 1) * charWidth;
-
-        newCursors.push({
-          name: state.user.name || "Anonymous",
-          color: state.user.color || "#999",
-          top: top - scrollTop,
-          left: left,
-        });
-      } catch {
-        // Position might be invalid
-      }
-    });
-
-    setCursors(newCursors);
-  }, [provider]);
-
-  // Listen for awareness changes and editor scroll
+  // Listen for awareness changes and dynamically inject CSS for remote carets & selections
   useEffect(() => {
-    if (!editorRef.current || !provider) return;
+    if (!provider) return;
+
+    const styleEl = document.createElement("style");
+    styleEl.id = `y-monaco-cursor-styles-${provider.roomname}`;
+    document.head.appendChild(styleEl);
 
     const onAwarenessChange = () => {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(computeCursorPositions);
+      const states = provider.awareness.getStates();
+      let css = "";
+
+      states.forEach((state: any, clientId: number) => {
+        if (clientId === provider.awareness.clientID) return;
+        if (!state.user) return;
+
+        const color = state.user.color || "#999";
+        const name = state.user.name || "Anonymous";
+
+        css += `
+          .yRemoteSelection-${clientId} {
+            background-color: ${color}40;
+          }
+          .yRemoteSelectionHead-${clientId} {
+            background-color: ${color};
+            border-left: 2px solid ${color};
+          }
+          .yRemoteSelectionHead-${clientId}::after {
+            content: "${name.replace(/"/g, '\\"')}";
+            background-color: ${color};
+          }
+        `;
+      });
+
+      styleEl.innerHTML = css;
     };
 
     provider.awareness.on("change", onAwarenessChange);
-
-    const editor = editorRef.current;
-    const scrollDisposable = editor.onDidScrollChange(() => {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(computeCursorPositions);
-    });
-
     onAwarenessChange();
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
       provider.awareness.off("change", onAwarenessChange);
-      scrollDisposable.dispose();
+      styleEl.remove();
     };
-  }, [provider, computeCursorPositions]);
+  }, [provider]);
 
   // Cleanup binding on unmount
   useEffect(() => {
@@ -431,47 +401,7 @@ function MonacoEditorInner({
           }}
         />
 
-        {/* Remote cursor overlays */}
-        {cursors.map((cursor, i) => (
-          <div
-            key={`code-cursor-${i}`}
-            className="code-remote-cursor"
-            style={{
-              position: "absolute",
-              top: cursor.top,
-              left: cursor.left,
-              pointerEvents: "none",
-              zIndex: 50,
-            }}
-          >
-            <div
-              className="code-remote-cursor-caret"
-              style={{
-                width: "2px",
-                height: "18px",
-                backgroundColor: cursor.color,
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                top: "-1.5em",
-                left: 0,
-                backgroundColor: cursor.color,
-                color: "#fff",
-                fontSize: "10px",
-                fontWeight: 600,
-                padding: "1px 5px",
-                borderRadius: "3px",
-                whiteSpace: "nowrap",
-                lineHeight: "1.3",
-                opacity: 0.9,
-              }}
-            >
-              {cursor.name}
-            </div>
-          </div>
-        ))}
+        {/* Remote cursor overlays rendered automatically via MonacoBinding & CSS */}
       </div>
 
       {/* Output Panel */}
