@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import "./code-editor.css";
-
+const url = process.env.NEXT_PUBLIC_COLLABORATIVE_SERVER_URL || "";
 interface CollaborativeCodeEditorProps {
   roomId: string;
   username: string;
@@ -62,7 +62,7 @@ export function CollaborativeCodeEditor({
     const doc = new Y.Doc();
     // Use a prefixed room name to separate code docs from text docs
     const wsProvider = new WebsocketProvider(
-      "ws://localhost:1234",
+      url,
       `code-${roomId}`,
       doc,
     );

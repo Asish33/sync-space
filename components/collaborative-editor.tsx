@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import "./editor.css";
-
+const url = process.env.NEXT_PUBLIC_COLLABORATIVE_SERVER_URL || "";
 interface CollaborativeEditorProps {
   roomId: string;
   username: string;
@@ -47,7 +47,7 @@ export function CollaborativeEditor({
   useEffect(() => {
     const doc = new Y.Doc();
     const wsProvider = new WebsocketProvider(
-      "ws://localhost:1234",
+      url,
       roomId,
       doc,
     );
