@@ -13,6 +13,7 @@ import {
   LocalParticipant,
 } from "livekit-client";
 import { authClient } from "@/lib/auth-client";
+import { BACKEND_URL } from "@/lib/api-config";
 import { GroupChat } from "@/components/group-chat";
 import { CollaborativeEditor } from "@/components/collaborative-editor";
 import { CollaborativeCodeEditor } from "@/components/collaborative-code-editor";
@@ -52,7 +53,7 @@ export default function GroupPage({
   const remoteVideoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
   useEffect(() => {
-    const socketInstance = io("http://localhost:3000", {
+    const socketInstance = io(BACKEND_URL, {
       withCredentials: true,
     });
 
@@ -125,7 +126,7 @@ export default function GroupPage({
 
     try {
       const res = await axios.get(
-        `http://localhost:3000/livekit/token?roomId=${groupId}`,
+        `${BACKEND_URL}/livekit/token?roomId=${groupId}`,
         { withCredentials: true },
       );
       const { token } = res.data;

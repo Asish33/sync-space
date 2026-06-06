@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { authClient } from "@/lib/auth-client"
+import { BACKEND_URL } from "@/lib/api-config"
 
 interface GroupsModalProps {
   open: boolean
@@ -45,7 +46,7 @@ export function GroupsModal({ open, onOpenChange }: GroupsModalProps) {
     try {
       setIsLoading(true)
       await axios.post(
-        "http://localhost:3000/group",
+        `${BACKEND_URL}/group`,
         {
           id: groupId,
           name: formData.name,
@@ -77,7 +78,7 @@ export function GroupsModal({ open, onOpenChange }: GroupsModalProps) {
       setIsLoading(true)
       try {
   const response = await axios.post(
-    `http://localhost:3000/joinGroup/${joinId}`,
+    `${BACKEND_URL}/joinGroup/${joinId}`,
     null,
     { withCredentials: true }
   );

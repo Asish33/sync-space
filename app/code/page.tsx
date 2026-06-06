@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { BACKEND_URL } from "@/lib/api-config";
 
 export default function CodePage() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function CodePage() {
       const contentJson = { code: content, language };
 
       await axios.post(
-        `http://localhost:3000/code/${codeId}`,
+        `${BACKEND_URL}/code/${codeId}`,
         {
           title,
           content: contentJson,

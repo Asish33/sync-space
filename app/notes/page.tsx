@@ -15,6 +15,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { BACKEND_URL } from "@/lib/api-config";
 
 export default function NotesPage() {
   const router = useRouter();
@@ -65,7 +66,7 @@ export default function NotesPage() {
     const notesId = nanoid(12);
     await axios
       .post(
-        `http://localhost:3000/notes/${notesId}`,
+        `${BACKEND_URL}/notes/${notesId}`,
         {
           title: title,
           content: content,

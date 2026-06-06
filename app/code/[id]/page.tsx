@@ -10,6 +10,7 @@ import AiChatPanel from "@/components/ai-chat-panel";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
+import { BACKEND_URL } from "@/lib/api-config";
 
 export default function CodeFilePage() {
   const params = useParams();
@@ -35,7 +36,7 @@ export default function CodeFilePage() {
     const fetchCode = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/code/${codeId}`,
+          `${BACKEND_URL}/code/${codeId}`,
           { withCredentials: true },
         );
         console.log("Fetched code:", response.data);
@@ -61,7 +62,7 @@ export default function CodeFilePage() {
     try {
       setIsSaving(true);
       await axios.put(
-        `http://localhost:3000/updateCode/${codeId}`,
+        `${BACKEND_URL}/updateCode/${codeId}`,
         {
           content: { code: content, language },
           title: codeFile?.title,

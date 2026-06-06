@@ -12,6 +12,7 @@ import AiChatPanel from "@/components/ai-chat-panel";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard-shell";
+import { BACKEND_URL } from "@/lib/api-config";
 
 export default function NotePage() {
   const params = useParams();
@@ -45,7 +46,7 @@ export default function NotePage() {
     const fetchNote = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/notes/${noteId}`,
+          `${BACKEND_URL}/notes/${noteId}`,
           {
             withCredentials: true,
           },
@@ -86,7 +87,7 @@ export default function NotePage() {
         "";
 
       await axios.put(
-        `http://localhost:3000/updateNotes/${noteId}`,
+        `${BACKEND_URL}/updateNotes/${noteId}`,
         { content, title: note?.title },
         { withCredentials: true },
       );

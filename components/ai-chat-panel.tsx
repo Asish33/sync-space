@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { BACKEND_URL } from "@/lib/api-config";
 
 interface ChatMessage {
   role: "user" | "ai";
@@ -57,7 +58,7 @@ ${contextData || "No context currently available."}
 User Question: ${trimmed}`;
 
       const res = await axios.post(
-        "http://localhost:3000/generate",
+        `${BACKEND_URL}/generate`,
         { prompt: enrichedPrompt, context: contextData },
         { withCredentials: true },
       );

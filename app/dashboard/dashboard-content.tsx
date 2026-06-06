@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { User } from "@/lib/user";
 import { useSignOut } from "@/lib/sign-out";
+import { BACKEND_URL } from "@/lib/api-config";
 import {
   LineChart,
   Line,
@@ -60,7 +61,7 @@ export default function DashboardContent() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/userNotes", {
+        const response = await axios.get(`${BACKEND_URL}/userNotes`, {
           withCredentials: true,
         });
         setNotes(response.data.notes || []);
@@ -73,7 +74,7 @@ export default function DashboardContent() {
 
     const fetchCodes = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/userCode", {
+        const response = await axios.get(`${BACKEND_URL}/userCode`, {
           withCredentials: true,
         });
         setCodes(response.data.codes || []);

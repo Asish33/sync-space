@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import "./code-editor.css";
+import { BACKEND_URL } from "@/lib/api-config";
 const url = process.env.NEXT_PUBLIC_COLLABORATIVE_SERVER_URL || "";
 interface CollaborativeCodeEditorProps {
   roomId: string;
@@ -252,7 +253,7 @@ function MonacoEditorInner({
         return;
       }
 
-      const response = await fetch("http://localhost:3000/code/run", {
+      const response = await fetch(`${BACKEND_URL}/code/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
