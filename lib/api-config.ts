@@ -1,1 +1,2 @@
-export const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000")
+export const BACKEND_URL = process.env.BACKEND_URL
+export const COLLABORATIVE_SERVER_URL = process.env.COLLABORATIVE_SERVER_URL
