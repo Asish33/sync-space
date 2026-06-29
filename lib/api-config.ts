@@ -1,2 +1,2 @@
-export const BACKEND_URL = process.env.BACKEND_URL
-export const COLLABORATIVE_SERVER_URL = process.env.COLLABORATIVE_SERVER_URL
+export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
+export const COLLABORATIVE_SERVER_URL = process.env.NEXT_PUBLIC_COLLABORATIVE_SERVER_URL!;
