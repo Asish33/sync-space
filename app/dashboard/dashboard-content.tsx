@@ -28,6 +28,7 @@ export default function DashboardContent() {
   const searchQuery = searchParams?.get("q")?.toLowerCase() || "";
 
   const { session, isPending } = User();
+  console.log("DashboardContent session", { session, isPending });
   const signOut = useSignOut();
   const [notes, setNotes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

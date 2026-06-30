@@ -53,10 +53,14 @@ export default function LoginPage() {
     }
 
     try {
-      await signInWithEmail({
+      console.log("Before sign in");
+
+      const data = await signInWithEmail({
         email,
         password,
       });
+
+      console.log("After sign in", data);
 
       router.push("/dashboard");
     } catch (err: any) {

@@ -20,6 +20,7 @@ export async function signInWithEmail({
     callbackURL: "/dashboard",
   });
 
+
   if (error) {
     throw new Error(error.message ?? "Failed to sign in");
   }
